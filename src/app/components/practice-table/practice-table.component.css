@@ -1,0 +1,271 @@
+.card {
+    background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+  }
+  .row { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 900px) {
+    .row { grid-template-columns: 2fr 1fr; }
+  }
+  label { display: block; font-weight: 600; margin-bottom: 6px; }
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  input[type="text"] {
+    width: 100%; padding: 12px 40px 12px 14px; border-radius: 10px; border: 1px solid var(--border);
+    background: #0b1020; color: var(--text); font-size: 16px; outline: none;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
+    font-family: inherit;
+  }
+  input::placeholder {
+    color: #9aa3b2;
+    font-family: inherit;
+  }
+  .clear-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 50%;
+    transition: color .15s ease, background-color .15s ease;
+  }
+  .clear-btn:hover {
+    color: var(--text);
+    background-color: var(--chip);
+  }
+  .clear-btn .material-symbols-outlined {
+    font-size: 20px;
+  }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .btn {
+    background: var(--chip); color: var(--text); border: 1px solid var(--border);
+    padding: 8px 10px; border-radius: 8px; cursor: pointer; font-weight: 600;
+    transition: background .15s ease, transform .02s ease;
+    font-family: inherit;
+  }
+  .btn:hover { background: var(--chip-hover); }
+  .btn:active { transform: translateY(1px); }
+  .btn.primary {
+    background: var(--accent);
+    border: none;
+    color: var(--bg);
+  }
+  .help-btn {
+    padding: 8px;
+    margin-left: 4px;
+  }
+  .help-btn .material-symbols-outlined {
+    font-size: 20px;
+    display: block;
+  }
+  
+  /* --- Estilos del Modal --- */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+  }
+  
+  .modal-content {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    animation: modal-fade-in .2s ease;
+  }
+  
+  @keyframes modal-fade-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+  
+  .modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+  }
+  
+  .modal-header .close-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    border-radius: 50%;
+    transition: background-color .15s ease, color .15s ease;
+  }
+  .modal-header .close-btn:hover {
+    background-color: var(--chip);
+    color: var(--text);
+  }
+  
+  .modal-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    line-height: 1.7;
+  }
+  
+  .modal-body li {
+    margin-bottom: 12px;
+  }
+  .modal-body li:last-child {
+    margin-bottom: 0;
+  }
+  
+  .modal-body strong {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  
+  .content-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .status { margin-top: 8px; min-height: 22px; font-size: 14px; }
+  .status.ok { color: var(--ok); }
+  .status.err { color: var(--bad); }
+  .table-scroller {
+    position: relative; /* Necesario para el pseudo-elemento */
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  
+  /* Pista visual para indicar que la tabla es desplazable en pantallas táctiles */
+  @media (pointer: coarse) {
+    .table-scroller::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 25px;
+      background: linear-gradient(to right, transparent, var(--panel));
+      pointer-events: none; /* Permite hacer clic a través del gradiente */
+    }
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td {
+    border-right: 1px solid var(--border); padding: 8px 10px; text-align: center; white-space: nowrap;
+  }
+  th { background: #111827; position: sticky; top: 0; z-index: 1; }
+  tbody tr:nth-child(odd) { background: rgba(255,255,255,.02); }
+  .pill {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 28px; padding: 2px 8px; border-radius: 999px; font-weight: 700;
+    font-family: inherit;
+  }
+  .pill.v { background: rgba(16,185,129,.15); color: #34d399; border: 1px solid rgba(16,185,129,.35); }
+  .pill.f { background: rgba(239,68,68,.15); color: #f87171; border: 1px solid rgba(239,68,68,.35); }
+  .thead-sub {
+    font-size: 12px; color: var(--muted); font-weight: 400;
+    display:block; margin-top: 2px; white-space: normal;
+  }
+
+/* --- Estilos específicos para el Modo Práctica --- */
+.practice-cell {
+  width: 40px;
+  height: 30px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background-color: var(--chip);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.practice-cell:hover {
+  background-color: var(--chip-hover);
+  color: var(--text);
+}
+.practice-cell.correct {
+  background: rgba(16,185,129,.25);
+  color: #34d399;
+  border-color: rgba(16,185,129,.4);
+}
+.practice-cell.incorrect {
+  background: rgba(239,68,68,.25);
+  color: #f87171;
+  border-color: rgba(239,68,68,.4);
+}
+
+.practice-controls {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Grid: no forzar ancho por contenido */
+.row > * { min-width: 0; }
+
+/* Estilos específicos para centrar el contenido en modo práctica */
+@media (min-width: 900px) {
+  .row {
+    grid-template-columns: 1fr; /* Solo una columna en lugar de 2fr 1fr */
+    justify-items: center; /* Centrar horizontalmente el contenido */
+  }
+  
+  .content-column {
+    max-width: 1200px; /* Limitar ancho máximo para mejor legibilidad */
+    width: 100%;
+    padding: 0 24px; /* Espacio lateral para que no llegue al borde */
+  }
+}
+
+/* Mensaje de estado: envolver texto largo */
+.status { 
+  overflow-wrap: anywhere; 
+  word-break: break-word; 
+}
+
+/* Scroll interno de tabla */
+.table-scroller {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+.table-scroller > table {
+  width: max-content;
+  min-width: 100%;
+}

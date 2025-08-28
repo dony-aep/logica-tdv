@@ -1,0 +1,51 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+  --bg: #121212;
+  --panel: #1E1E1E;
+  --muted: #888888;
+  --text: #E0E0E0;
+  --accent: #FFFFFF;
+  --ok: #10b981;
+  --bad: #ef4444;
+  --chip: #2A2A2A;
+  --chip-hover: #3C3C3C;
+  --border: #3C3C3C;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial;
+  background: radial-gradient(1200px 800px at 20% 0%, #000000 0%, var(--bg) 70%), var(--bg);
+  color: var(--text);
+}
+main { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+@media (max-width: 640px) {
+  main {
+    padding: 16px;
+  }
+}
+
+html.dark-theme {
+  --scrollbar-track-color: #1f1f1f;
+  --scrollbar-thumb-color: #b5b5b5; /* contraste suficiente en oscuro */
+}
+
+/* Firefox */
+* {
+  scrollbar-color: var(--scrollbar-thumb-color, #b5b5b5) var(--scrollbar-track-color, #1f1f1f);
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-color, #1f1f1f);
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-color, #b5b5b5);
+  border-radius: 999px;
+  border: 2px solid var(--scrollbar-track-color, #1f1f1f);
+}

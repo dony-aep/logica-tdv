@@ -1,0 +1,141 @@
+<main class="row">
+  <div class="content-column">
+    <!-- Card 1: Área de Entrada -->
+    <section class="card">
+      <div>
+        <label for="expr">Expresión</label>
+        <div class="input-wrapper">
+          <input #exprInput id="expr" type="text" placeholder="Ej.: ¬(p ∨ q) → r  |  !(p || q) -> r  |  [p ∧ q] ↔ r" 
+                 spellcheck="false" [(ngModel)]="expression" (keydown)="onKeydown($event)" />
+          <button *ngIf="expression" class="clear-btn" (click)="clearExpression()" aria-label="Limpiar expresión">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        
+        <div class="toolbar" aria-label="Operadores">
+          <button class="btn" (click)="insertText('¬')" title="Negación (NO)">¬</button>
+          <button class="btn" (click)="insertText('∧')" title="Conjunción (Y)">∧</button>
+          <button class="btn" (click)="insertText('∨')" title="Disyunción (O)">∨</button>
+          <button class="btn" (click)="insertText('→')" title="Condicional (Si... entonces)">→</button>
+          <button class="btn" (click)="insertText('↔')" title="Bicondicional (Si y solo si)">↔</button>
+          <button class="btn" (click)="insertText('(')" title="Abrir paréntesis"> ( </button>
+          <button class="btn" (click)="insertText(')')" title="Cerrar paréntesis"> ) </button>
+          <button class="btn" (click)="insertText('[')" title="Abrir corchete"> [ </button>
+          <button class="btn" (click)="insertText(']')" title="Cerrar corchete"> ] </button>
+          <button class="btn" (click)="insertText('{')" title="Abrir llave"> {{ '{' }} </button>
+          <button class="btn" (click)="insertText('}')" title="Cerrar llave"> {{ '}' }} </button>
+          <button id="gen" class="btn primary" (click)="generateTable()" title="Generar tabla (Ctrl+Enter)">Generar tabla</button>
+          <button class="btn help-btn" (click)="openHelpModal()" title="Ayuda sobre operadores" aria-label="Ayuda sobre operadores">
+            <span class="material-symbols-outlined">help</span>
+          </button>
+        </div>
+
+        <div id="status" class="status" [class.ok]="status.type === 'ok'" [class.err]="status.type === 'err'" role="status">
+          {{ status.message }}
+        </div>
+      </div>
+    </section>
+
+    <!-- Separador: Descripción sin fondo -->
+    <div class="hint description-box">
+      <div>- <strong>Operadores:</strong> ¬, ∧, ∨, →, ↔ y también !, ~, &&, ||, ->, <->, and, or, not.</div>
+      <div>- <strong>Agrupación:</strong> Paréntesis ( ), corchetes [ ] y llaves {{ '{' }} {{ '}' }} (se normalizan a paréntesis).</div>
+      <div>- <strong>Variables:</strong> p, q, r... o nombres (p.ej., Lluvia, Paraguas). Máximo 10 variables.</div>
+    </div>
+
+    <!-- Card 2: Área de Resultados -->
+    <section class="card" *ngIf="tableData">
+      <div class="table-scroller">
+        <table>
+          <thead>
+            <tr>
+              <!-- Encabezados de variables -->
+              <th *ngFor="let v of tableData.vars; let i = index" 
+                  [ngClass]="{ 
+                    'highlight-source': highlighted.sources.has(i),
+                    'highlight-dim': highlighted.main !== null && highlighted.main !== i && !highlighted.sources.has(i) 
+                  }">
+                {{ v }}<span class="thead-sub">Variable</span>
+              </th>
+              <!-- Encabezados de pasos -->
+              <th *ngFor="let s of tableData.steps; let i = index"
+                  (mouseenter)="onHighlightStep(i)" (mouseleave)="onClearHighlight()"
+                  [ngClass]="{
+                    'highlight-main': highlighted.main === tableData.vars.length + i,
+                    'highlight-source': highlighted.sources.has(tableData.vars.length + i),
+                    'highlight-dim': highlighted.main !== null && highlighted.main !== (tableData.vars.length + i) && !highlighted.sources.has(tableData.vars.length + i)
+                  }">
+                Paso {{ i + 1 }}<span class="thead-sub">{{ s.expr }}</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of tableData.rows">
+              <!-- Valores de variables -->
+              <td *ngFor="let v of tableData.vars; let i = index"
+                  [ngClass]="{
+                    'highlight-source': highlighted.sources.has(i),
+                    'highlight-dim': highlighted.main !== null && highlighted.main !== i && !highlighted.sources.has(i) 
+                  }">
+                <span class="pill" [class.v]="row.env[v]" [class.f]="!row.env[v]">
+                  {{ row.env[v] ? 'V' : 'F' }}
+                </span>
+              </td>
+              <!-- Valores de pasos -->
+              <td *ngFor="let val of row.stepVals; let i = index"
+                  [ngClass]="{
+                    'highlight-main': highlighted.main === tableData.vars.length + i,
+                    'highlight-source': highlighted.sources.has(tableData.vars.length + i),
+                    'highlight-dim': highlighted.main !== null && highlighted.main !== (tableData.vars.length + i) && !highlighted.sources.has(tableData.vars.length + i)
+                  }">
+                <span class="pill" [class.v]="val" [class.f]="!val">
+                  {{ val ? 'V' : 'F' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <aside class="card">
+    <div>
+      <label>Ejemplos</label>
+      <div class="chips">
+        <button *ngFor="let ex of examples" class="chip" type="button" (click)="setExample(ex)">
+          {{ ex }}
+        </button>
+      </div>
+    </div>
+    <div style="margin-top:16px">
+      <label>Atajos</label>
+      <ul class="hint" style="margin:6px 0 0 16px; line-height:1.6">
+        <li>Escribe <code class="kbd">!(p || q) -> r</code> o <code class="kbd">¬(p ∨ q) → r</code>.</li>
+        <li>También puedes usar <code class="kbd">[ ]</code> y <code class="kbd">{{ '{' }} {{ '}' }}</code> para agrupar.</li>
+        <li>Hasta 10 variables únicas (máx. 1024 filas).</li>
+      </ul>
+    </div>
+  </aside>
+</main>
+
+<!-- Modal de Ayuda -->
+<div *ngIf="isHelpModalVisible" class="modal-overlay" (click)="closeHelpModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <header class="modal-header">
+      <h2>Guía de Operadores Lógicos</h2>
+      <button class="close-btn" (click)="closeHelpModal()" aria-label="Cerrar modal">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </header>
+    <div class="modal-body">
+      <ul>
+        <li><strong>¬ (Negación):</strong> Invierte el valor de verdad. Si algo es verdadero, se vuelve falso, y viceversa.</li>
+        <li><strong>∧ (Conjunción):</strong> Es verdadero únicamente si <strong>ambos</strong> operandos son verdaderos.</li>
+        <li><strong>∨ (Disyunción):</strong> Es verdadero si <strong>al menos uno</strong> de los operandos es verdadero.</li>
+        <li><strong>→ (Condicional):</strong> Es falso solamente si el primer operando (antecedente) es verdadero y el segundo (consecuente) es falso.</li>
+        <li><strong>↔ (Bicondicional):</strong> Es verdadero si ambos operandos tienen el <strong>mismo valor de verdad</strong> (ambos verdaderos o ambos falsos).</li>
+      </ul>
+    </div>
+  </div>
+</div>

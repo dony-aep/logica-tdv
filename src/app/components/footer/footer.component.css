@@ -1,0 +1,16 @@
+footer { 
+  color: var(--muted); 
+  text-align: center; 
+  padding: 26px 20px 120px; /* Aumentado el padding inferior */
+}
+
+footer a {
+    color: var(--text);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color .2s ease;
+}
+
+footer a:hover {
+    color: var(--accent);
+}

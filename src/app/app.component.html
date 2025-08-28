@@ -1,0 +1,12 @@
+<app-header />
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<app-mode-selector 
+  [selectedMode]="selectedMode" 
+  (modeChange)="selectMode($event)" 
+/>
+
+<app-footer />

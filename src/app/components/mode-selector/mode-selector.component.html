@@ -1,0 +1,10 @@
+<div class="mode-selector-floating">
+  <button class="mode-btn" [class.active]="selectedMode === 'practice'" (click)="selectMode('practice')">
+    <span class="material-symbols-outlined">school</span>
+    Modo Práctica
+  </button>
+  <button class="mode-btn" [class.active]="selectedMode === 'generate'" (click)="selectMode('generate')">
+    <span class="material-symbols-outlined">functions</span>
+    Modo Generador
+  </button>
+</div>
