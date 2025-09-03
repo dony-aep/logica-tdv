@@ -1,5 +1,33 @@
 <main class="row">
   <div class="content-column">
+    <!-- Card 0: Enunciado -> Expresión (LLM) -->
+    <section class="card">
+      <h2>Enunciado a Expresión</h2>
+      <div class="input-group">
+        <label for="apikey">API Key de Gemini</label>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input id="apikey" [type]="showApiKey ? 'text' : 'password'" placeholder="GEMINI_API_KEY" [(ngModel)]="apiKey" style="flex:1" />
+          <button class="btn icon" type="button" (click)="showApiKey = !showApiKey" [attr.title]="showApiKey ? 'Ocultar API Key' : 'Mostrar API Key'">
+            <span class="material-symbols-outlined">{{ showApiKey ? 'visibility_off' : 'visibility' }}</span>
+          </button>
+        </div>
+        <div class="toolbar">
+          <button class="btn" (click)="saveApiKey()">Guardar</button>
+          <button class="btn" (click)="clearApiKey()" [disabled]="!hasApiKey">Eliminar</button>
+        </div>
+        <div class="hint">Estado: {{ hasApiKey ? 'API Key configurada' : 'No configurada' }}</div>
+      </div>
+
+      <div class="input-group" [class.disabled]="!hasApiKey">
+        <label for="stmt">Enunciado</label>
+        <textarea id="stmt" rows="3" placeholder="Ej.: Si no (p o q), entonces r." [(ngModel)]="statement"></textarea>
+        <div class="toolbar">
+          <button class="btn" (click)="generateFromStatement()" [disabled]="!hasApiKey || nlLoading">{{ nlLoading ? 'Generando...' : 'Generar expresión' }}</button>
+        </div>
+        <div id="nl-status" class="status" [class.ok]="nlStatus.type === 'ok'" [class.err]="nlStatus.type === 'err'">{{ nlStatus.message }}</div>
+      </div>
+    </section>
+
     <!-- Card 1: Área de Entrada -->
     <section class="card">
       <div>
@@ -101,6 +129,18 @@
 
   <aside class="card">
     <div>
+      <label>Ayuda</label>
+      <ul class="hint" style="margin:6px 0 16px 16px; line-height:1.6">
+        <li>Primero guarda tu API Key. Luego ingresa el enunciado.</li>
+        <li>
+          Obtén tu API Key en 
+          <a class="link-btn" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">
+            <span class="material-symbols-outlined">open_in_new</span>
+            aistudio.google.com/apikey
+          </a>.
+        </li>
+        <li>La expresión generada se coloca en el campo de expresión para crear la tabla.</li>
+      </ul>
       <label>Ejemplos</label>
       <div class="chips">
         <button *ngFor="let ex of examples" class="chip" type="button" (click)="setExample(ex)">

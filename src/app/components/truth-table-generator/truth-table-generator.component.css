@@ -8,13 +8,21 @@
 @media (min-width: 900px) {
   .row { grid-template-columns: 2fr 1fr; }
 }
+/* Reusar estilos de inputs y toolbars para el bloque NL */
+.input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+textarea {
+  width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border);
+  background: #0b1020; color: var(--text); font-size: 16px; outline: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.02); font-family: inherit;
+}
 label { display: block; font-weight: 600; margin-bottom: 6px; }
 .input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   width: 100%; padding: 12px 40px 12px 14px; border-radius: 10px; border: 1px solid var(--border);
   background: #0b1020; color: var(--text); font-size: 16px; outline: none;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
@@ -54,6 +62,8 @@ input::placeholder {
   transition: background .15s ease, transform .02s ease;
   font-family: inherit;
 }
+.btn.icon { padding: 6px; display: inline-flex; align-items: center; justify-content: center; }
+.btn.icon .material-symbols-outlined { font-size: 20px; }
 .btn:hover { background: var(--chip-hover); }
 .btn:active { transform: translateY(1px); }
 .btn.primary {
@@ -172,6 +182,13 @@ input::placeholder {
 .status { margin-top: 8px; min-height: 22px; font-size: 14px; }
 .status.ok { color: var(--ok); }
 .status.err { color: var(--bad); }
+.link-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 8px; border-radius: 8px; border: 1px dashed var(--border);
+  background: #0d1326; color: var(--text); text-decoration: none;
+}
+.link-btn:hover { border-style: solid; }
+.link-btn .material-symbols-outlined { font-size: 18px; }
 .table-scroller {
   position: relative; /* Necesario para el pseudo-elemento */
   overflow-x: auto;

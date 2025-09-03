@@ -39,7 +39,8 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      const mode = event.urlAfterRedirects.substring(1) as AppMode;
+      const path = event.urlAfterRedirects.split('?')[0];
+      const mode = path.substring(1) as AppMode;
       if (mode === 'generate' || mode === 'practice') {
         this.selectedMode = mode;
       }
