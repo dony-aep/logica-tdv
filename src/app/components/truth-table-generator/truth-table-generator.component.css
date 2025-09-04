@@ -5,14 +5,12 @@
   box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
 }
 .row { display: grid; grid-template-columns: 1fr; gap: 12px; }
-@media (min-width: 900px) {
-  .row { grid-template-columns: 2fr 1fr; }
-}
+
 /* Reusar estilos de inputs y toolbars para el bloque NL */
 .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
 textarea {
   width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border);
-  background: #0b1020; color: var(--text); font-size: 16px; outline: none;
+  background: var(--input-bg); color: var(--text); font-size: 16px; outline: none;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.02); font-family: inherit;
 }
 label { display: block; font-weight: 600; margin-bottom: 6px; }
@@ -24,7 +22,7 @@ label { display: block; font-weight: 600; margin-bottom: 6px; }
 input[type="text"],
 input[type="password"] {
   width: 100%; padding: 12px 40px 12px 14px; border-radius: 10px; border: 1px solid var(--border);
-  background: #0b1020; color: var(--text); font-size: 16px; outline: none;
+  background: var(--input-bg); color: var(--text); font-size: 16px; outline: none;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
   font-family: inherit;
 }
@@ -71,6 +69,12 @@ input::placeholder {
   border: none;
   color: var(--bg);
 }
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .help-btn {
   padding: 8px;
   margin-left: 4px;
@@ -175,7 +179,7 @@ input::placeholder {
 .hint { color: var(--muted); font-size: 14px; margin-top: 6px; }
 .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top: 10px; }
 .chip {
-  background: #0d1326; border: 1px dashed var(--border); color: var(--muted);
+  background: var(--chip-secondary-bg); border: 1px dashed var(--border); color: var(--muted);
   padding: 6px 10px; border-radius: 999px; cursor: pointer; font-family: inherit;
 }
 .chip:hover { color: var(--text); border-style: solid; }
@@ -185,44 +189,29 @@ input::placeholder {
 .link-btn {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 4px 8px; border-radius: 8px; border: 1px dashed var(--border);
-  background: #0d1326; color: var(--text); text-decoration: none;
+  background: var(--chip-secondary-bg); color: var(--text); text-decoration: none;
 }
 .link-btn:hover { border-style: solid; }
 .link-btn .material-symbols-outlined { font-size: 18px; }
 .table-scroller {
-  position: relative; /* Necesario para el pseudo-elemento */
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: 10px;
-}
-
-/* Pista visual para indicar que la tabla es desplazable en pantallas táctiles */
-@media (pointer: coarse) {
-  .table-scroller::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 25px;
-    background: linear-gradient(to right, transparent, var(--panel));
-    pointer-events: none; /* Permite hacer clic a través del gradiente */
-  }
 }
 
 table { width: 100%; border-collapse: collapse; }
 th, td {
   border-right: 1px solid var(--border); padding: 8px 10px; text-align: center; white-space: nowrap;
 }
-th { background: #111827; position: sticky; top: 0; z-index: 1; }
+th { background: var(--table-header-bg); position: sticky; top: 0; z-index: 1; }
 tbody tr:nth-child(odd) { background: rgba(255,255,255,.02); }
 .pill {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 28px; padding: 2px 8px; border-radius: 999px; font-weight: 700;
   font-family: inherit;
 }
-.pill.v { background: rgba(16,185,129,.15); color: #34d399; border: 1px solid rgba(16,185,129,.35); }
-.pill.f { background: rgba(239,68,68,.15); color: #f87171; border: 1px solid rgba(239,68,68,.35); }
+.pill.v { background: var(--ok-bg); color: var(--ok-text); border: 1px solid var(--ok-border); }
+.pill.f { background: var(--bad-bg); color: var(--bad-text); border: 1px solid var(--bad-border); }
 .thead-sub {
   font-size: 12px; color: var(--muted); font-weight: 400;
   display:block; margin-top: 2px; white-space: normal;
@@ -232,7 +221,7 @@ th, td { transition: opacity .2s ease, background-color .2s ease; }
 .highlight-source { background-color: rgba(255, 255, 255, 0.08); }
 .highlight-dim { opacity: 0.4; }
 code.kbd {
-  background: #0b1020; border: 1px solid var(--border); border-radius: 6px; padding: 2px 6px;
+  background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; padding: 2px 6px;
 }
 
 /* Grid: no forzar ancho por contenido */
@@ -255,6 +244,19 @@ code.kbd {
   -webkit-overflow-scrolling: touch;
 }
 .table-scroller > table {
+  position: relative;
+  z-index: 2;
   width: max-content;
   min-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .input-group .toolbar {
+    flex-direction: column;
+  }
+  #gen {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+  }
 }

@@ -4,7 +4,7 @@
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(30, 30, 30, 0.7); /* Fondo semitransparente para el blur */
+  background: var(--selector-bg);
   backdrop-filter: blur(4px);
   border: 1px solid var(--border);
   border-radius: 50px;
@@ -22,9 +22,9 @@
 }
 
 .mode-selector-floating .mode-btn {
-  background: var(--chip);
-  border: 1px solid var(--border);
-  color: var(--text);
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--muted);
   padding: 10px 20px;
   border-radius: 40px;
   font-family: inherit;
@@ -38,14 +38,19 @@
 }
 
 .mode-selector-floating .mode-btn:hover {
-  background: var(--chip-hover);
-  border-color: var(--accent);
+  background: var(--chip);
+  color: var(--text);
 }
 
 .mode-selector-floating .mode-btn.active {
   background: var(--accent);
   color: var(--bg);
   border-color: transparent;
+}
+
+.mode-selector-floating .mode-btn.active:hover {
+  background: var(--accent);
+  color: var(--bg);
 }
 
 .mode-selector-floating .mode-btn .material-symbols-outlined {

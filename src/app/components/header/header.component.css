@@ -1,14 +1,51 @@
 header {
-  padding: 32px 20px; text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 header h1 {
-  margin: 0 0 8px; font-size: 28px; letter-spacing: .3px; font-weight: 700;
+  margin: 0; font-size: 28px; letter-spacing: .3px; font-weight: 700;
 }
 header p { margin: 0; color: var(--muted); }
 
+/* Estilos para el botón de tema (reutilizados) */
+.btn {
+  background: var(--chip);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background .15s ease, transform .02s ease;
+  font-family: inherit;
+}
+.btn.icon {
+  padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn:hover {
+  background: var(--chip-hover);
+}
+
 @media (max-width: 640px) {
   header {
-    padding: 24px 16px;
+    padding: 16px;
+  }
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
   header h1 {
     font-size: 24px;

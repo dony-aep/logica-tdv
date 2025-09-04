@@ -18,6 +18,19 @@
         <div class="hint">Estado: {{ hasApiKey ? 'API Key configurada' : 'No configurada' }}</div>
       </div>
 
+      <label>Ayuda</label>
+      <ul class="hint" style="margin:6px 0 16px 16px; line-height:1.6">
+        <li>Primero guarda tu API Key. Luego ingresa el enunciado.</li>
+        <li>
+          Obtén tu API Key en 
+          <a class="link-btn" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">
+            <span class="material-symbols-outlined">open_in_new</span>
+            aistudio.google.com/apikey
+          </a>.
+        </li>
+        <li>La expresión generada se coloca en el campo de expresión para crear la tabla.</li>
+      </ul>
+
       <div class="input-group" [class.disabled]="!hasApiKey">
         <label for="stmt">Enunciado</label>
         <textarea id="stmt" rows="3" placeholder="Ej.: Si no (p o q), entonces r." [(ngModel)]="statement"></textarea>
@@ -61,15 +74,41 @@
         <div id="status" class="status" [class.ok]="status.type === 'ok'" [class.err]="status.type === 'err'" role="status">
           {{ status.message }}
         </div>
+
+        <label style="margin-top: 16px;">Ejemplos</label>
+        <div class="chips">
+          <button *ngFor="let ex of examples" class="chip" type="button" (click)="setExample(ex)">
+            {{ ex }}
+          </button>
+        </div>
       </div>
     </section>
 
-    <!-- Separador: Descripción sin fondo -->
-    <div class="hint description-box">
-      <div>- <strong>Operadores:</strong> ¬, ∧, ∨, →, ↔ y también !, ~, &&, ||, ->, <->, and, or, not.</div>
-      <div>- <strong>Agrupación:</strong> Paréntesis ( ), corchetes [ ] y llaves {{ '{' }} {{ '}' }} (se normalizan a paréntesis).</div>
-      <div>- <strong>Variables:</strong> p, q, r... o nombres (p.ej., Lluvia, Paraguas). Máximo 10 variables.</div>
-    </div>
+    <aside class="card">
+      <div>
+        <label>Guía Rápida</label>
+        <ul class="hint" style="list-style: none; padding: 0; margin-top: 8px; display: flex; flex-direction: column; gap: 10px;">
+          <li>
+            <strong>Operadores y Alias:</strong>
+            <ul style="list-style-type: '› '; padding-left: 16px; margin-top: 4px; display: flex; flex-direction: column; gap: 4px;">
+              <li>Negación: <code class="kbd">¬</code>, <code class="kbd">!</code>, <code class="kbd">~</code>, <code class="kbd">not</code></li>
+              <li>Conjunción: <code class="kbd">∧</code>, <code class="kbd">&&</code>, <code class="kbd">and</code></li>
+              <li>Disyunción: <code class="kbd">∨</code>, <code class="kbd">||</code>, <code class="kbd">or</code></li>
+              <li>Condicional: <code class="kbd">→</code>, <code class="kbd">-></code></li>
+              <li>Bicondicional: <code class="kbd">↔</code>, <code class="kbd"><-></code></li>
+            </ul>
+          </li>
+          <li>
+            <strong>Agrupación:</strong>
+            <div style="margin-top: 4px;">Puedes usar <code class="kbd">( )</code>, <code class="kbd">[ ]</code> y <code class="kbd">{{ '{' }} {{ '}' }}</code>. Todos se tratan como paréntesis.</div>
+          </li>
+          <li>
+            <strong>Variables:</strong>
+            <div style="margin-top: 4px;">Usa letras como 'p', 'q' o nombres como 'Lluvia'. Máximo 10 variables únicas (1024 filas).</div>
+          </li>
+        </ul>
+      </div>
+    </aside>
 
     <!-- Card 2: Área de Resultados -->
     <section class="card" *ngIf="tableData">
@@ -126,37 +165,6 @@
       </div>
     </section>
   </div>
-
-  <aside class="card">
-    <div>
-      <label>Ayuda</label>
-      <ul class="hint" style="margin:6px 0 16px 16px; line-height:1.6">
-        <li>Primero guarda tu API Key. Luego ingresa el enunciado.</li>
-        <li>
-          Obtén tu API Key en 
-          <a class="link-btn" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">
-            <span class="material-symbols-outlined">open_in_new</span>
-            aistudio.google.com/apikey
-          </a>.
-        </li>
-        <li>La expresión generada se coloca en el campo de expresión para crear la tabla.</li>
-      </ul>
-      <label>Ejemplos</label>
-      <div class="chips">
-        <button *ngFor="let ex of examples" class="chip" type="button" (click)="setExample(ex)">
-          {{ ex }}
-        </button>
-      </div>
-    </div>
-    <div style="margin-top:16px">
-      <label>Atajos</label>
-      <ul class="hint" style="margin:6px 0 0 16px; line-height:1.6">
-        <li>Escribe <code class="kbd">!(p || q) -> r</code> o <code class="kbd">¬(p ∨ q) → r</code>.</li>
-        <li>También puedes usar <code class="kbd">[ ]</code> y <code class="kbd">{{ '{' }} {{ '}' }}</code> para agrupar.</li>
-        <li>Hasta 10 variables únicas (máx. 1024 filas).</li>
-      </ul>
-    </div>
-  </aside>
 </main>
 
 <!-- Modal de Ayuda -->
