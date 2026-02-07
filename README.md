@@ -1,59 +1,71 @@
-# LogicaTdvAngular
+# LogicaTdv
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6.
+Aplicación web para generar y practicar tablas de verdad de lógica proposicional clásica, con soporte de IA para convertir enunciados en lenguaje natural a expresiones lógicas.
 
-## Development server
+## Características
 
-To start a local development server, run:
+- **Generador de tablas de verdad** — Ingresa cualquier expresión lógica y genera su tabla de verdad paso a paso
+- **Modo práctica** — Completa celdas interactivas y recibe feedback visual (correcto/incorrecto)
+- **IA: Enunciado → Expresión** — Convierte enunciados en español a expresiones lógicas usando la API de Google Gemini
+- **Selector de modelos** — Elige entre Gemini 3 Flash, 2.5 Flash, 2.5 Flash-Lite, 3 Pro y 2.5 Pro (con indicadores de tier gratis/pago)
+- **Tema claro/oscuro** — Toggle de tema con persistencia en localStorage
+- **Responsive** — Diseño adaptado a móvil con scroll horizontal interno en tablas
+
+## Tech Stack
+
+- **Angular** 21.1.3
+- **TypeScript** ~5.9.3
+- **Google Generative AI SDK** (`@google/genai`)
+- **Vercel Analytics**
+
+## Desarrollo
+
+### Requisitos previos
+
+- Node.js 20+
+- Angular CLI (`npm install -g @angular/cli`)
+
+### Instalación
+
+```bash
+git clone https://github.com/dony-aep/logica-tdv.git
+cd logica-tdv
+npm install
+```
+
+### Servidor de desarrollo
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Abre `http://localhost:4200/` en tu navegador.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+### Build de producción
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Los artefactos se generan en el directorio `dist/`.
 
-## Running unit tests
+## Estructura del proyecto
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+```
+src/app/
+├── components/
+│   ├── header/                  # Header con marca y toggle de tema
+│   ├── footer/                  # Footer editorial
+│   ├── mode-selector/           # Navegación entre modos (Práctica / Generador)
+│   ├── truth-table-generator/   # Generador de tablas de verdad + IA
+│   └── practice-table/          # Modo práctica interactivo
+├── services/
+│   ├── truth-table.service.ts   # Lógica de evaluación de expresiones
+│   └── gemini.service.ts        # Integración con Google Gemini API
+├── app.routes.ts                # Rutas con lazy loading
+└── app.config.ts                # Configuración de la aplicación
 ```
 
-## Running end-to-end tests
+## Licencia
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Made by **dony**.
