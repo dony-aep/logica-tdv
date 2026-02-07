@@ -2,6 +2,8 @@
 
 Aplicación web para generar y practicar tablas de verdad de lógica proposicional clásica, con soporte de IA para convertir enunciados en lenguaje natural a expresiones lógicas.
 
+![Vista previa de LogicaTdv](preview.png)
+
 ## Características
 
 - **Generador de tablas de verdad** — Ingresa cualquier expresión lógica y genera su tabla de verdad paso a paso
