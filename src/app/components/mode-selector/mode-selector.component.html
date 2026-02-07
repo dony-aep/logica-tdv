@@ -1,10 +1,13 @@
-<div class="mode-selector-floating">
-  <button class="mode-btn" [class.active]="selectedMode === 'practice'" (click)="selectMode('practice')">
-    <span class="material-symbols-outlined">school</span>
-    Modo Práctica
-  </button>
-  <button class="mode-btn" [class.active]="selectedMode === 'generate'" (click)="selectMode('generate')">
-    <span class="material-symbols-outlined">functions</span>
-    Modo Generador
-  </button>
-</div>
+<nav class="mode-selector">
+  <div class="mode-track">
+    <div class="mode-indicator" [class.right]="selectedMode() === 'generate'"></div>
+    <button class="mode-btn" [class.active]="selectedMode() === 'practice'" (click)="selectMode('practice')">
+      <span class="material-symbols-outlined">school</span>
+      <span class="mode-label">Práctica</span>
+    </button>
+    <button class="mode-btn" [class.active]="selectedMode() === 'generate'" (click)="selectMode('generate')">
+      <span class="material-symbols-outlined">functions</span>
+      <span class="mode-label">Generador</span>
+    </button>
+  </div>
+</nav>

@@ -2,52 +2,126 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
+  padding: 20px 24px;
   border-bottom: 1px solid var(--border);
+  animation: header-fade-in 0.5s ease-out;
 }
-.header-content {
+
+@keyframes header-fade-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Brand area */
+.header-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
-header h1 {
-  margin: 0; font-size: 28px; letter-spacing: .3px; font-weight: 700;
-}
-header p { margin: 0; color: var(--muted); }
 
-/* Estilos para el botón de tema (reutilizados) */
-.btn {
-  background: var(--chip);
-  color: var(--text);
-  border: 1px solid var(--border);
-  padding: 8px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background .15s ease, transform .02s ease;
-  font-family: inherit;
+.brand-mark {
+  color: var(--accent);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  flex-shrink: 0;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  user-select: none;
 }
-.btn.icon {
-  padding: 6px;
+
+.brand-mark .material-symbols-outlined {
+  font-size: 22px;
+}
+
+.brand-mark:hover {
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+header h1 {
+  margin: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+header p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.2px;
+  line-height: 1.3;
+}
+
+/* Theme toggle — icon button */
+.theme-toggle {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid transparent;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-.btn:hover {
-  background: var(--chip-hover);
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
+.theme-toggle:hover {
+  color: var(--text);
+  background: var(--chip);
+  border-color: var(--border);
+}
+
+.theme-toggle:active {
+  transform: scale(0.9);
+}
+
+.theme-toggle .material-symbols-outlined {
+  font-size: 20px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.theme-toggle:active .material-symbols-outlined {
+  transform: rotate(30deg);
+}
+
+/* Responsive */
 @media (max-width: 640px) {
   header {
     padding: 16px;
   }
-  .header-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
   }
+
+  .brand-mark .material-symbols-outlined {
+    font-size: 20px;
+  }
+
   header h1 {
-    font-size: 24px;
+    font-size: 18px;
+  }
+
+  header p {
+    font-size: 12px;
   }
 }

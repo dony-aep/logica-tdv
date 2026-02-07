@@ -1,189 +1,236 @@
-<main class="row">
+<main class="generator">
   <div class="content-column">
-    <!-- Card 0: Enunciado -> Expresión (LLM) -->
-    <section class="card">
-      <h2>Enunciado a Expresión</h2>
-      <div class="input-group">
-        <label for="apikey">API Key de Gemini</label>
-        <div style="display:flex; gap:8px; align-items:center;">
-          <input id="apikey" [type]="showApiKey ? 'text' : 'password'" placeholder="GEMINI_API_KEY" [(ngModel)]="apiKey" style="flex:1" />
-          <button class="btn icon" type="button" (click)="showApiKey = !showApiKey" [attr.title]="showApiKey ? 'Ocultar API Key' : 'Mostrar API Key'">
-            <span class="material-symbols-outlined">{{ showApiKey ? 'visibility_off' : 'visibility' }}</span>
+
+    <!-- AI Section (collapsible) -->
+    <details class="section collapsible">
+      <summary class="section-toggle">
+        <span class="material-symbols-outlined toggle-chevron">expand_more</span>
+        <span class="material-symbols-outlined toggle-icon">auto_awesome</span>
+        <span class="toggle-text">Enunciado a Expresión</span>
+        <span class="badge">IA</span>
+      </summary>
+      <div class="section-body">
+        <div class="field">
+          <label class="field-label" for="apikey">API Key de Gemini</label>
+          <div class="field-row">
+            <input id="apikey" class="input" [type]="showApiKey() ? 'text' : 'password'" placeholder="GEMINI_API_KEY" [ngModel]="apiKey()" (ngModelChange)="apiKey.set($event)" />
+            <button class="btn-icon" type="button" (click)="showApiKey.set(!showApiKey())" [attr.title]="showApiKey() ? 'Ocultar' : 'Mostrar'">
+              <span class="material-symbols-outlined">{{ showApiKey() ? 'visibility_off' : 'visibility' }}</span>
+            </button>
+          </div>
+          <div class="field-actions">
+            <button class="btn-ghost" (click)="saveApiKey()">Guardar</button>
+            <button class="btn-ghost" (click)="clearApiKey()" [disabled]="!hasApiKey()">Eliminar</button>
+          </div>
+          <p class="field-hint">
+            {{ hasApiKey() ? 'API Key configurada' : 'No configurada' }}
+            · <a class="inline-link" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Obtener clave <span class="material-symbols-outlined inline-link-icon">open_in_new</span></a>
+          </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="field" [class.disabled]="!hasApiKey()">
+          <label class="field-label">Modelo</label>
+          <div class="model-selector">
+            @for (m of availableModels; track m.id) {
+              <button class="model-option" [class.active]="selectedModel() === m.id" (click)="selectedModel.set(m.id)">
+                <span class="model-name">{{ m.label }}</span>
+                <span class="model-tier" [class.tier-free]="m.tier === 'free'" [class.tier-paid]="m.tier === 'paid'">{{ m.tier === 'free' ? 'Gratis' : 'Pago' }}</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="field" [class.disabled]="!hasApiKey()">
+          <label class="field-label" for="stmt">Enunciado</label>
+          <textarea id="stmt" class="input textarea" rows="3" placeholder="Ej.: Si no (p o q), entonces r." [ngModel]="statement()" (ngModelChange)="statement.set($event)"></textarea>
+          <button class="btn-solid" (click)="generateFromStatement()" [disabled]="!hasApiKey() || nlLoading()">
+            @if (nlLoading()) {
+              Generando…
+            } @else {
+              Generar expresión
+            }
           </button>
+          @if (nlStatus().message) {
+            <p class="status" [class.status-ok]="nlStatus().type === 'ok'" [class.status-err]="nlStatus().type === 'err'">{{ nlStatus().message }}</p>
+          }
         </div>
-        <div class="toolbar">
-          <button class="btn" (click)="saveApiKey()">Guardar</button>
-          <button class="btn" (click)="clearApiKey()" [disabled]="!hasApiKey">Eliminar</button>
-        </div>
-        <div class="hint">Estado: {{ hasApiKey ? 'API Key configurada' : 'No configurada' }}</div>
       </div>
+    </details>
 
-      <label>Ayuda</label>
-      <ul class="hint" style="margin:6px 0 16px 16px; line-height:1.6">
-        <li>Primero guarda tu API Key. Luego ingresa el enunciado.</li>
-        <li>
-          Obtén tu API Key en 
-          <a class="link-btn" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">
-            <span class="material-symbols-outlined">open_in_new</span>
-            aistudio.google.com/apikey
-          </a>.
-        </li>
-        <li>La expresión generada se coloca en el campo de expresión para crear la tabla.</li>
-      </ul>
-
-      <div class="input-group" [class.disabled]="!hasApiKey">
-        <label for="stmt">Enunciado</label>
-        <textarea id="stmt" rows="3" placeholder="Ej.: Si no (p o q), entonces r." [(ngModel)]="statement"></textarea>
-        <div class="toolbar">
-          <button class="btn" (click)="generateFromStatement()" [disabled]="!hasApiKey || nlLoading">{{ nlLoading ? 'Generando...' : 'Generar expresión' }}</button>
-        </div>
-        <div id="nl-status" class="status" [class.ok]="nlStatus.type === 'ok'" [class.err]="nlStatus.type === 'err'">{{ nlStatus.message }}</div>
-      </div>
-    </section>
-
-    <!-- Card 1: Área de Entrada -->
-    <section class="card">
-      <div>
-        <label for="expr">Expresión</label>
-        <div class="input-wrapper">
-          <input #exprInput id="expr" type="text" placeholder="Ej.: ¬(p ∨ q) → r  |  !(p || q) -> r  |  [p ∧ q] ↔ r" 
-                 spellcheck="false" [(ngModel)]="expression" (keydown)="onKeydown($event)" />
-          <button *ngIf="expression" class="clear-btn" (click)="clearExpression()" aria-label="Limpiar expresión">
+    <!-- Expression Input (Primary) -->
+    <section class="section">
+      <span class="section-label">Expresión lógica</span>
+      <div class="expression-input">
+        <input #exprInput id="expr" class="input input-expr" type="text"
+               placeholder="¬(p ∨ q) → r"
+               spellcheck="false" [ngModel]="expression()" (ngModelChange)="expression.set($event)" (keydown)="onKeydown($event)" />
+        @if (expression()) {
+          <button class="clear-btn" (click)="clearExpression()" aria-label="Limpiar expresión">
             <span class="material-symbols-outlined">close</span>
           </button>
-        </div>
-        
-        <div class="toolbar" aria-label="Operadores">
-          <button class="btn" (click)="insertText('¬')" title="Negación (NO)">¬</button>
-          <button class="btn" (click)="insertText('∧')" title="Conjunción (Y)">∧</button>
-          <button class="btn" (click)="insertText('∨')" title="Disyunción (O)">∨</button>
-          <button class="btn" (click)="insertText('→')" title="Condicional (Si... entonces)">→</button>
-          <button class="btn" (click)="insertText('↔')" title="Bicondicional (Si y solo si)">↔</button>
-          <button class="btn" (click)="insertText('(')" title="Abrir paréntesis"> ( </button>
-          <button class="btn" (click)="insertText(')')" title="Cerrar paréntesis"> ) </button>
-          <button class="btn" (click)="insertText('[')" title="Abrir corchete"> [ </button>
-          <button class="btn" (click)="insertText(']')" title="Cerrar corchete"> ] </button>
-          <button class="btn" (click)="insertText('{')" title="Abrir llave"> {{ '{' }} </button>
-          <button class="btn" (click)="insertText('}')" title="Cerrar llave"> {{ '}' }} </button>
-          <button id="gen" class="btn primary" (click)="generateTable()" title="Generar tabla (Ctrl+Enter)">Generar tabla</button>
-          <button class="btn help-btn" (click)="openHelpModal()" title="Ayuda sobre operadores" aria-label="Ayuda sobre operadores">
-            <span class="material-symbols-outlined">help</span>
-          </button>
-        </div>
+        }
+      </div>
 
-        <div id="status" class="status" [class.ok]="status.type === 'ok'" [class.err]="status.type === 'err'" role="status">
-          {{ status.message }}
-        </div>
+      <div class="operator-grid" aria-label="Operadores">
+        <button class="op-btn" (click)="insertText('¬')" title="Negación">¬</button>
+        <button class="op-btn" (click)="insertText('∧')" title="Conjunción">∧</button>
+        <button class="op-btn" (click)="insertText('∨')" title="Disyunción">∨</button>
+        <button class="op-btn" (click)="insertText('→')" title="Condicional">→</button>
+        <button class="op-btn" (click)="insertText('↔')" title="Bicondicional">↔</button>
+        <button class="op-btn" (click)="insertText('(')" title="("> ( </button>
+        <button class="op-btn" (click)="insertText(')')" title=")"> ) </button>
+        <button class="op-btn" (click)="insertText('[')" title="["> [ </button>
+        <button class="op-btn" (click)="insertText(']')" title="]"> ] </button>
+        <button class="op-btn" (click)="insertText('{')" title="{{ '{' }}">{{ '{' }}</button>
+        <button class="op-btn" (click)="insertText('}')" title="{{ '}' }}">{{ '}' }}</button>
+        <button class="op-btn op-help" (click)="openHelpModal()" title="Ayuda" aria-label="Ayuda">
+          <span class="material-symbols-outlined">help_outline</span>
+        </button>
+      </div>
 
-        <label style="margin-top: 16px;">Ejemplos</label>
-        <div class="chips">
-          <button *ngFor="let ex of examples" class="chip" type="button" (click)="setExample(ex)">
-            {{ ex }}
-          </button>
+      <button class="btn-generate" (click)="generateTable()" title="Generar tabla (Enter)">
+        <span class="material-symbols-outlined">table_chart</span>
+        Generar tabla
+      </button>
+
+      @if (status().message) {
+        <p class="status" [class.status-ok]="status().type === 'ok'" [class.status-err]="status().type === 'err'" role="status">
+          {{ status().message }}
+        </p>
+      }
+
+      <div class="examples">
+        <span class="examples-label">Ejemplos</span>
+        <div class="example-list">
+          @for (ex of examples(); track ex) {
+            <button class="example-chip" type="button" (click)="setExample(ex)">{{ ex }}</button>
+          }
         </div>
       </div>
     </section>
 
-    <aside class="card">
-      <div>
-        <label>Guía Rápida</label>
-        <ul class="hint" style="list-style: none; padding: 0; margin-top: 8px; display: flex; flex-direction: column; gap: 10px;">
-          <li>
-            <strong>Operadores y Alias:</strong>
-            <ul style="list-style-type: '› '; padding-left: 16px; margin-top: 4px; display: flex; flex-direction: column; gap: 4px;">
-              <li>Negación: <code class="kbd">¬</code>, <code class="kbd">!</code>, <code class="kbd">~</code>, <code class="kbd">not</code></li>
-              <li>Conjunción: <code class="kbd">∧</code>, <code class="kbd">&&</code>, <code class="kbd">and</code></li>
-              <li>Disyunción: <code class="kbd">∨</code>, <code class="kbd">||</code>, <code class="kbd">or</code></li>
-              <li>Condicional: <code class="kbd">→</code>, <code class="kbd">-></code></li>
-              <li>Bicondicional: <code class="kbd">↔</code>, <code class="kbd"><-></code></li>
-            </ul>
-          </li>
-          <li>
-            <strong>Agrupación:</strong>
-            <div style="margin-top: 4px;">Puedes usar <code class="kbd">( )</code>, <code class="kbd">[ ]</code> y <code class="kbd">{{ '{' }} {{ '}' }}</code>. Todos se tratan como paréntesis.</div>
-          </li>
-          <li>
-            <strong>Variables:</strong>
-            <div style="margin-top: 4px;">Usa letras como 'p', 'q' o nombres como 'Lluvia'. Máximo 10 variables únicas (1024 filas).</div>
-          </li>
-        </ul>
+    <!-- Quick Guide (collapsible) -->
+    <details class="section collapsible">
+      <summary class="section-toggle">
+        <span class="material-symbols-outlined toggle-chevron">expand_more</span>
+        <span class="material-symbols-outlined toggle-icon">menu_book</span>
+        <span class="toggle-text">Guía Rápida</span>
+      </summary>
+      <div class="section-body guide-body">
+        <div class="guide-group">
+          <span class="guide-title">Operadores y Alias</span>
+          <div class="guide-grid">
+            <div class="guide-row"><span class="guide-op">Negación</span><span class="guide-keys"><code>¬</code> <code>!</code> <code>~</code> <code>not</code></span></div>
+            <div class="guide-row"><span class="guide-op">Conjunción</span><span class="guide-keys"><code>∧</code> <code>&&</code> <code>and</code></span></div>
+            <div class="guide-row"><span class="guide-op">Disyunción</span><span class="guide-keys"><code>∨</code> <code>||</code> <code>or</code></span></div>
+            <div class="guide-row"><span class="guide-op">Condicional</span><span class="guide-keys"><code>→</code> <code>-></code></span></div>
+            <div class="guide-row"><span class="guide-op">Bicondicional</span><span class="guide-keys"><code>↔</code> <code>&lt;-></code></span></div>
+          </div>
+        </div>
+        <div class="guide-group">
+          <span class="guide-title">Agrupación</span>
+          <p class="guide-text">Usa <code>( )</code>, <code>[ ]</code> y <code>{{ '{' }} {{ '}' }}</code>. Todos se tratan como paréntesis.</p>
+        </div>
+        <div class="guide-group">
+          <span class="guide-title">Variables</span>
+          <p class="guide-text">Letras como 'p', 'q' o nombres como 'Lluvia'. Máximo 10 variables únicas.</p>
+        </div>
       </div>
-    </aside>
+    </details>
 
-    <!-- Card 2: Área de Resultados -->
-    <section class="card" *ngIf="tableData">
-      <div class="table-scroller">
-        <table>
-          <thead>
-            <tr>
-              <!-- Encabezados de variables -->
-              <th *ngFor="let v of tableData.vars; let i = index" 
-                  [ngClass]="{ 
-                    'highlight-source': highlighted.sources.has(i),
-                    'highlight-dim': highlighted.main !== null && highlighted.main !== i && !highlighted.sources.has(i) 
-                  }">
-                {{ v }}<span class="thead-sub">Variable</span>
-              </th>
-              <!-- Encabezados de pasos -->
-              <th *ngFor="let s of tableData.steps; let i = index"
-                  (mouseenter)="onHighlightStep(i)" (mouseleave)="onClearHighlight()"
-                  [ngClass]="{
-                    'highlight-main': highlighted.main === tableData.vars.length + i,
-                    'highlight-source': highlighted.sources.has(tableData.vars.length + i),
-                    'highlight-dim': highlighted.main !== null && highlighted.main !== (tableData.vars.length + i) && !highlighted.sources.has(tableData.vars.length + i)
-                  }">
-                Paso {{ i + 1 }}<span class="thead-sub">{{ s.expr }}</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let row of tableData.rows">
-              <!-- Valores de variables -->
-              <td *ngFor="let v of tableData.vars; let i = index"
-                  [ngClass]="{
-                    'highlight-source': highlighted.sources.has(i),
-                    'highlight-dim': highlighted.main !== null && highlighted.main !== i && !highlighted.sources.has(i) 
-                  }">
-                <span class="pill" [class.v]="row.env[v]" [class.f]="!row.env[v]">
-                  {{ row.env[v] ? 'V' : 'F' }}
-                </span>
-              </td>
-              <!-- Valores de pasos -->
-              <td *ngFor="let val of row.stepVals; let i = index"
-                  [ngClass]="{
-                    'highlight-main': highlighted.main === tableData.vars.length + i,
-                    'highlight-source': highlighted.sources.has(tableData.vars.length + i),
-                    'highlight-dim': highlighted.main !== null && highlighted.main !== (tableData.vars.length + i) && !highlighted.sources.has(tableData.vars.length + i)
-                  }">
-                <span class="pill" [class.v]="val" [class.f]="!val">
-                  {{ val ? 'V' : 'F' }}
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+    <!-- Results Table -->
+    @if (tableData(); as data) {
+      <section class="section">
+        <span class="section-label">Resultado</span>
+        <div class="table-container">
+          <table class="truth-table">
+            <thead>
+              <tr>
+                @for (v of data.vars; track v; let i = $index) {
+                  <th [class.highlight-source]="highlighted().sources.has(i)"
+                      [class.highlight-dim]="highlighted().main !== null && highlighted().main !== i && !highlighted().sources.has(i)">
+                    <span class="th-main">{{ v }}</span>
+                    <span class="th-sub">Variable</span>
+                  </th>
+                }
+                @for (s of data.steps; track s.expr; let i = $index) {
+                  <th (mouseenter)="onHighlightStep(i)" (mouseleave)="onClearHighlight()"
+                      [class.highlight-main]="highlighted().main === data.vars.length + i"
+                      [class.highlight-source]="highlighted().sources.has(data.vars.length + i)"
+                      [class.highlight-dim]="highlighted().main !== null && highlighted().main !== (data.vars.length + i) && !highlighted().sources.has(data.vars.length + i)">
+                    <span class="th-main">P{{ i + 1 }}</span>
+                    <span class="th-sub">{{ s.expr }}</span>
+                  </th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of data.rows; track $index) {
+                <tr>
+                  @for (v of data.vars; track v; let i = $index) {
+                    <td [class.highlight-source]="highlighted().sources.has(i)"
+                        [class.highlight-dim]="highlighted().main !== null && highlighted().main !== i && !highlighted().sources.has(i)">
+                      <span class="cell-val" [class.val-true]="row.env[v]" [class.val-false]="!row.env[v]">
+                        {{ row.env[v] ? 'V' : 'F' }}
+                      </span>
+                    </td>
+                  }
+                  @for (val of row.stepVals; track $index; let i = $index) {
+                    <td [class.highlight-main]="highlighted().main === data.vars.length + i"
+                        [class.highlight-source]="highlighted().sources.has(data.vars.length + i)"
+                        [class.highlight-dim]="highlighted().main !== null && highlighted().main !== (data.vars.length + i) && !highlighted().sources.has(data.vars.length + i)">
+                      <span class="cell-val" [class.val-true]="val" [class.val-false]="!val">
+                        {{ val ? 'V' : 'F' }}
+                      </span>
+                    </td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+    }
+
   </div>
 </main>
 
-<!-- Modal de Ayuda -->
-<div *ngIf="isHelpModalVisible" class="modal-overlay" (click)="closeHelpModal()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <header class="modal-header">
-      <h2>Guía de Operadores Lógicos</h2>
-      <button class="close-btn" (click)="closeHelpModal()" aria-label="Cerrar modal">
-        <span class="material-symbols-outlined">close</span>
-      </button>
-    </header>
-    <div class="modal-body">
-      <ul>
-        <li><strong>¬ (Negación):</strong> Invierte el valor de verdad. Si algo es verdadero, se vuelve falso, y viceversa.</li>
-        <li><strong>∧ (Conjunción):</strong> Es verdadero únicamente si <strong>ambos</strong> operandos son verdaderos.</li>
-        <li><strong>∨ (Disyunción):</strong> Es verdadero si <strong>al menos uno</strong> de los operandos es verdadero.</li>
-        <li><strong>→ (Condicional):</strong> Es falso solamente si el primer operando (antecedente) es verdadero y el segundo (consecuente) es falso.</li>
-        <li><strong>↔ (Bicondicional):</strong> Es verdadero si ambos operandos tienen el <strong>mismo valor de verdad</strong> (ambos verdaderos o ambos falsos).</li>
-      </ul>
+<!-- Help Modal -->
+@if (isHelpModalVisible()) {
+  <div class="modal-backdrop" (click)="closeHelpModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <header class="modal-header">
+        <h2 class="modal-title">Operadores Lógicos</h2>
+        <button class="btn-icon" (click)="closeHelpModal()" aria-label="Cerrar">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+      <div class="modal-body">
+        <dl class="modal-list">
+          <div class="modal-item">
+            <dt>¬ Negación</dt>
+            <dd>Invierte el valor de verdad.</dd>
+          </div>
+          <div class="modal-item">
+            <dt>∧ Conjunción</dt>
+            <dd>Verdadero solo si ambos operandos son verdaderos.</dd>
+          </div>
+          <div class="modal-item">
+            <dt>∨ Disyunción</dt>
+            <dd>Verdadero si al menos uno es verdadero.</dd>
+          </div>
+          <div class="modal-item">
+            <dt>→ Condicional</dt>
+            <dd>Falso solo si el antecedente es verdadero y el consecuente falso.</dd>
+          </div>
+          <div class="modal-item">
+            <dt>↔ Bicondicional</dt>
+            <dd>Verdadero si ambos tienen el mismo valor de verdad.</dd>
+          </div>
+        </dl>
+      </div>
     </div>
   </div>
-</div>
+}

@@ -1,85 +1,88 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  /* Default: Dark Theme */
-  --bg: rgb(13, 17, 23);
-  --panel: #161b22;
-  --muted: #8b949e;
-  --text: #c9d1d9;
-  --accent: #FFFFFF;
-  --ok: #10b981;
+  /* ── Dark Theme (ink & charcoal) ── */
+  --bg: #0a0a0b;
+  --panel: #121214;
+  --surface: #18181b;
+  --muted: #71717a;
+  --text: #e4e4e7;
+  --accent: #fafafa;
+  --ok: #22c55e;
   --bad: #ef4444;
-  --chip: #21262d;
-  --chip-hover: #30363d;
-  --border: #30363d;
-  --input-bg: #0b1020;
-  --chip-secondary-bg: #0d1326;
-  --scrollbar-track-color: #1f1f1f;
-  --scrollbar-thumb-color: #b5b5b5;
+  --chip: #1e1e22;
+  --chip-hover: #27272a;
+  --border: #27272a;
+  --input-bg: #09090b;
+  --chip-secondary-bg: #111113;
+  --scrollbar-track-color: #18181b;
+  --scrollbar-thumb-color: #3f3f46;
 
-  /* Table colors */
-  --table-header-bg: #111827;
-  --ok-text: #34d399;
-  --ok-bg: rgba(16,185,129,.15);
-  --ok-border: rgba(16,185,129,.35);
+  /* Table */
+  --table-header-bg: #111113;
+  --ok-text: #4ade80;
+  --ok-bg: rgba(34, 197, 94, 0.12);
+  --ok-border: rgba(34, 197, 94, 0.25);
   --bad-text: #f87171;
-  --bad-bg: rgba(239,68,68,.15);
-  --bad-border: rgba(239,68,68,.35);
-  --practice-ok-bg: rgba(16, 185, 129, .25);
-  --practice-ok-border: rgba(16, 185, 129, .4);
-  --practice-bad-bg: rgba(239, 68, 68, .25);
-  --practice-bad-border: rgba(239, 68, 68, .4);
-  --selector-bg: rgba(30, 30, 30, 0.7);
+  --bad-bg: rgba(239, 68, 68, 0.12);
+  --bad-border: rgba(239, 68, 68, 0.25);
+  --practice-ok-bg: rgba(34, 197, 94, 0.18);
+  --practice-ok-border: rgba(34, 197, 94, 0.35);
+  --practice-bad-bg: rgba(239, 68, 68, 0.18);
+  --practice-bad-border: rgba(239, 68, 68, 0.35);
+  --selector-bg: rgba(10, 10, 11, 0.75);
 }
 
 html.light-theme {
-  --bg: #FFFFFF;
-  --panel: #F6F8FA;
-  --muted: #586069;
-  --text: #24292E;
-  --accent: #000000;
-  --ok: #1a7f37;
-  --bad: #d73a49;
-  --chip: #eef0f2;
-  --chip-hover: #dde1e6;
-  --border: #d0d7de;
-  --input-bg: #FFFFFF;
-  --chip-secondary-bg: #f6f8fa;
-  --scrollbar-track-color: #f1f1f1;
-  --scrollbar-thumb-color: #888;
+  /* ── Light Theme (warm paper) ── */
+  --bg: #fafaf9;
+  --panel: #f5f5f4;
+  --surface: #e7e5e4;
+  --muted: #78716c;
+  --text: #1c1917;
+  --accent: #0c0a09;
+  --ok: #16a34a;
+  --bad: #dc2626;
+  --chip: #e7e5e4;
+  --chip-hover: #d6d3d1;
+  --border: #d6d3d1;
+  --input-bg: #fafaf9;
+  --chip-secondary-bg: #f5f5f4;
+  --scrollbar-track-color: #f5f5f4;
+  --scrollbar-thumb-color: #a8a29e;
 
-  /* Table colors */
-  --table-header-bg: #f6f8fa;
-  --ok-text: #1a7f37;
-  --ok-bg: rgba(26, 127, 55, 0.15);
-  --ok-border: rgba(26, 127, 55, 0.3);
-  --bad-text: #d73a49;
-  --bad-bg: rgba(215, 58, 73, 0.15);
-  --bad-border: rgba(215, 58, 73, 0.3);
-  --practice-ok-bg: rgba(26, 127, 55, 0.25);
-  --practice-ok-border: rgba(26, 127, 55, 0.4);
-  --practice-bad-bg: rgba(215, 58, 73, 0.25);
-  --practice-bad-border: rgba(215, 58, 73, 0.4);
-  --selector-bg: rgba(255, 255, 255, 0.7);
+  /* Table */
+  --table-header-bg: #f5f5f4;
+  --ok-text: #16a34a;
+  --ok-bg: rgba(22, 163, 74, 0.1);
+  --ok-border: rgba(22, 163, 74, 0.25);
+  --bad-text: #dc2626;
+  --bad-bg: rgba(220, 38, 38, 0.1);
+  --bad-border: rgba(220, 38, 38, 0.25);
+  --practice-ok-bg: rgba(22, 163, 74, 0.15);
+  --practice-ok-border: rgba(22, 163, 74, 0.3);
+  --practice-bad-bg: rgba(220, 38, 38, 0.15);
+  --practice-bad-border: rgba(220, 38, 38, 0.3);
+  --selector-bg: rgba(250, 250, 249, 0.8);
 }
 
 * { box-sizing: border-box; }
 body {
   margin: 0;
   font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial;
-  background: radial-gradient(1200px 800px at 20% 0%, #000000 0%, var(--bg) 70%), var(--bg);
-  color: var(--text);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-html.light-theme body {
   background: var(--bg);
+  color: var(--text);
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
 
-main { max-width: 1400px; margin: 0 auto; padding: 16px; }
+html, body {
+  overflow-x: hidden;
+}
+
+main { max-width: 1400px; margin: 0 auto; padding: 16px; overflow-x: hidden; box-sizing: border-box; width: 100%; }
 
 @media (max-width: 640px) {
   main {
-    padding: 8px;
+    padding: 12px;
   }
 }
 

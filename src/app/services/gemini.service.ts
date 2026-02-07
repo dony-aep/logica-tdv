@@ -6,9 +6,7 @@ import { GoogleGenAI } from '@google/genai';
 })
 export class GeminiService {
 
-  constructor() { }
-
-  async getExpressionFromStatement(apiKey: string, statement: string): Promise<string> {
+  async getExpressionFromStatement(apiKey: string, statement: string, model = 'gemini-2.5-flash'): Promise<string> {
     if (!apiKey) {
       throw new Error('API Key de Gemini no proporcionada.');
     }
@@ -85,7 +83,7 @@ ${statement}
 Devuelve solo la expresión, nada más:`;
 
     const result = await ai.models.generateContent({
-      model: 'gemini-2.5-pro',
+      model,
       contents: prompt,
     });
 

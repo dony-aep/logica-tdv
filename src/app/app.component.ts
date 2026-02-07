@@ -1,17 +1,16 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, PLATFORM_ID, signal, inject } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { filter } from 'rxjs';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ModeSelectorComponent, AppMode } from './components/mode-selector/mode-selector.component';
-import { inject } from '@vercel/analytics';
+import { inject as injectAnalytics } from '@vercel/analytics';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     RouterOutlet,
     HeaderComponent,
     FooterComponent,
@@ -21,18 +20,15 @@ import { inject } from '@vercel/analytics';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  title = 'logica-tdv-angular';
-  selectedMode: AppMode = 'generate';
+  private readonly router = inject(Router);
+  private readonly platformId = inject(PLATFORM_ID);
 
-  constructor(
-    private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  readonly selectedMode = signal<AppMode>('generate');
 
   ngOnInit(): void {
     // Inicializar Vercel Analytics solo en el navegador
     if (isPlatformBrowser(this.platformId)) {
-      inject();
+      injectAnalytics();
     }
 
     // Escuchar cambios de ruta para mantener el estado del selector actualizado
@@ -42,7 +38,7 @@ export class AppComponent implements OnInit {
       const path = event.urlAfterRedirects.split('?')[0];
       const mode = path.substring(1) as AppMode;
       if (mode === 'generate' || mode === 'practice') {
-        this.selectedMode = mode;
+        this.selectedMode.set(mode);
       }
     });
   }

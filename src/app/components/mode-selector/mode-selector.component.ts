@@ -1,19 +1,18 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy, input, output } from '@angular/core';
 
 // Definimos un tipo para que el modo sea consistente en toda la aplicación
 export type AppMode = 'generate' | 'practice';
 
 @Component({
   selector: 'app-mode-selector',
-  standalone: true,
-  imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [],
   templateUrl: './mode-selector.component.html',
   styleUrl: './mode-selector.component.css'
 })
 export class ModeSelectorComponent {
-  @Input() selectedMode: AppMode = 'generate';
-  @Output() modeChange = new EventEmitter<AppMode>();
+  readonly selectedMode = input<AppMode>('generate');
+  readonly modeChange = output<AppMode>();
 
   selectMode(mode: AppMode): void {
     this.modeChange.emit(mode);

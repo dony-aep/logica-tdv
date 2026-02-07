@@ -1,9 +1,14 @@
 <header>
-  <div class="header-content">
-    <h1>LogicaTdv</h1>
-    <p>Evalúa expresiones lógicas paso a paso.</p>
+  <div class="header-left">
+    <span class="brand-mark" aria-hidden="true">
+      <span class="material-symbols-outlined">conversion_path</span>
+    </span>
+    <div class="header-text">
+      <h1>LogicaTdv</h1>
+      <p>Evalúa expresiones lógicas paso a paso.</p>
+    </div>
   </div>
-  <button class="btn icon" title="Cambiar tema" (click)="toggleTheme()">
-    <span class="material-symbols-outlined">{{ themeIcon }}</span>
+  <button class="theme-toggle" title="Cambiar tema" (click)="toggleTheme()" aria-label="Cambiar tema">
+    <span class="material-symbols-outlined">{{ themeIcon() }}</span>
   </button>
 </header>

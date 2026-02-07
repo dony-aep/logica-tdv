@@ -36,8 +36,6 @@ export interface PracticeTableData {
 })
 export class TruthTableService {
 
-  constructor() { }
-
   // --- API Pública ---
 
   public generateTableFromExpression(expression: string): TableData {

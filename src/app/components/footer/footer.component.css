@@ -1,16 +1,69 @@
-footer { 
-  color: var(--muted); 
-  text-align: center; 
-  padding: 26px 20px 120px; /* Aumentado el padding inferior */
+footer {
+  padding: 0 24px 120px;
+  animation: footer-fade-in 0.6s ease-out 0.2s both;
 }
 
-footer a {
-    color: var(--text);
-    font-weight: 600;
-    text-decoration: none;
-    transition: color .2s ease;
+@keyframes footer-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-footer a:hover {
-    color: var(--accent);
+.footer-divider {
+  width: 48px;
+  height: 1px;
+  background: var(--border);
+  margin: 0 auto 20px;
+}
+
+.footer-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footer-tagline {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.3px;
+}
+
+.footer-credit {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.footer-credit a {
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.footer-credit a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.footer-credit a:hover {
+  color: var(--accent);
+}
+
+.footer-credit a:hover::after {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  footer {
+    padding: 0 16px 120px;
+  }
 }

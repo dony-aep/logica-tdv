@@ -1,98 +1,144 @@
-<main class="row">
+<main class="practice">
   <div class="content-column">
-    <!-- Card 1: Área de Entrada de Práctica -->
-    <section class="card">
-      <div>
-        <label for="expr">Expresión a practicar</label>
-        <div class="input-wrapper">
-          <input #exprInput id="expr" type="text" placeholder="Ej.: (p ∧ q) → p" 
-                 spellcheck="false" [(ngModel)]="expression" (keydown)="onKeydown($event)" />
-          <button *ngIf="expression" class="clear-btn" (click)="clearExpression()" aria-label="Limpiar expresión">
+
+    <!-- Expression Input -->
+    <section class="section">
+      <span class="section-label">Expresión a practicar</span>
+      <div class="expression-input">
+        <input #exprInput id="expr" class="input input-expr" type="text"
+               placeholder="(p ∧ q) → p"
+               spellcheck="false" [ngModel]="expression()" (ngModelChange)="expression.set($event)" (keydown)="onKeydown($event)" />
+        @if (expression()) {
+          <button class="clear-btn" (click)="clearExpression()" aria-label="Limpiar expresión">
             <span class="material-symbols-outlined">close</span>
           </button>
+        }
+      </div>
+
+      <div class="operator-grid" aria-label="Operadores">
+        <button class="op-btn" (click)="insertText('¬')" title="Negación">¬</button>
+        <button class="op-btn" (click)="insertText('∧')" title="Conjunción">∧</button>
+        <button class="op-btn" (click)="insertText('∨')" title="Disyunción">∨</button>
+        <button class="op-btn" (click)="insertText('→')" title="Condicional">→</button>
+        <button class="op-btn" (click)="insertText('↔')" title="Bicondicional">↔</button>
+        <button class="op-btn" (click)="insertText('(')" title="("> ( </button>
+        <button class="op-btn" (click)="insertText(')')" title=")"> ) </button>
+        <button class="op-btn" (click)="insertText('[')" title="["> [ </button>
+        <button class="op-btn" (click)="insertText(']')" title="]"> ] </button>
+        <button class="op-btn" (click)="insertText('{')" title="{{ '{' }}">{{ '{' }}</button>
+        <button class="op-btn" (click)="insertText('}')" title="{{ '}' }}">{{ '}' }}</button>
+        <button class="op-btn op-help" (click)="openHelpModal()" title="Ayuda" aria-label="Ayuda">
+          <span class="material-symbols-outlined">help_outline</span>
+        </button>
+      </div>
+
+      <button class="btn-generate" (click)="startPractice()" title="Generar tabla de práctica (Enter)">
+        <span class="material-symbols-outlined">edit_note</span>
+        Practicar
+      </button>
+
+      @if (status().message) {
+        <p class="status" [class.status-ok]="status().type === 'ok'" [class.status-err]="status().type === 'err'" role="status">
+          {{ status().message }}
+        </p>
+      }
+    </section>
+
+    <!-- Practice Table -->
+    @if (practiceData(); as data) {
+      <section class="section">
+        <span class="section-label">Completa la tabla</span>
+        <div class="table-container">
+          <table class="practice-table">
+            <thead>
+              <tr>
+                @for (v of data.vars; track v) {
+                  <th>
+                    <span class="th-main">{{ v }}</span>
+                    <span class="th-sub">Variable</span>
+                  </th>
+                }
+                @for (s of data.steps; track s.expr; let i = $index) {
+                  <th>
+                    <span class="th-main">P{{ i + 1 }}</span>
+                    <span class="th-sub">{{ s.expr }}</span>
+                  </th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of data.rows; track $index; let rowIndex = $index) {
+                <tr>
+                  @for (v of data.vars; track v) {
+                    <td>
+                      <span class="cell-val" [class.val-true]="row.env[v]" [class.val-false]="!row.env[v]">
+                        {{ row.env[v] ? 'V' : 'F' }}
+                      </span>
+                    </td>
+                  }
+                  @for (s of data.steps; track s.expr; let colIndex = $index) {
+                    <td>
+                      <button class="practice-cell"
+                              (click)="togglePracticeCellValue(rowIndex, colIndex)"
+                              [class.cell-true]="userPracticeInputs()[rowIndex][colIndex] === true"
+                              [class.cell-false]="userPracticeInputs()[rowIndex][colIndex] === false"
+                              [class.cell-correct]="isPracticeVerified() && verificationStatus()[rowIndex][colIndex] === 'correct'"
+                              [class.cell-incorrect]="isPracticeVerified() && verificationStatus()[rowIndex][colIndex] === 'incorrect'">
+                        {{ userPracticeInputs()[rowIndex][colIndex] === true ? 'V' : (userPracticeInputs()[rowIndex][colIndex] === false ? 'F' : '?') }}
+                      </button>
+                    </td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
         </div>
-        
-        <div class="toolbar" aria-label="Operadores">
-          <button class="btn" (click)="insertText('¬')" title="Negación (NO)">¬</button>
-          <button class="btn" (click)="insertText('∧')" title="Conjunción (Y)">∧</button>
-          <button class="btn" (click)="insertText('∨')" title="Disyunción (O)">∨</button>
-          <button class="btn" (click)="insertText('→')" title="Condicional (Si... entonces)">→</button>
-          <button class="btn" (click)="insertText('↔')" title="Bicondicional (Si y solo si)">↔</button>
-          <button class="btn" (click)="insertText('(')" title="Abrir paréntesis"> ( </button>
-          <button class="btn" (click)="insertText(')')" title="Cerrar paréntesis"> ) </button>
-          <button class="btn" (click)="insertText('[')" title="Abrir corchete"> [ </button>
-          <button class="btn" (click)="insertText(']')" title="Cerrar corchete"> ] </button>
-          <button class="btn" (click)="insertText('{')" title="Abrir llave"> {{ '{' }} </button>
-          <button class="btn" (click)="insertText('}')" title="Cerrar llave"> {{ '}' }} </button>
-          <button id="gen" class="btn primary" (click)="startPractice()" title="Generar tabla de práctica (Ctrl+Enter)">Practicar</button>
-          <button class="btn help-btn" (click)="openHelpModal()" title="Ayuda sobre operadores" aria-label="Ayuda sobre operadores">
-            <span class="material-symbols-outlined">help</span>
+        <div class="practice-actions">
+          <button class="btn-generate" (click)="verifyAnswers()">
+            <span class="material-symbols-outlined">check_circle</span>
+            Verificar
           </button>
         </div>
+      </section>
+    }
 
-        <div id="status" class="status" [class.ok]="status.type === 'ok'" [class.err]="status.type === 'err'" role="status">
-          {{ status.message }}
-        </div>
-      </div>
-    </section>
-
-    <!-- Card 2: Tabla de Práctica -->
-    <section class="card" *ngIf="practiceData">
-      <div class="table-scroller">
-        <table>
-          <thead>
-            <tr>
-              <!-- Encabezados de variables -->
-              <th *ngFor="let v of practiceData.vars">{{ v }}<span class="thead-sub">Variable</span></th>
-              <!-- Encabezados de pasos -->
-              <th *ngFor="let s of practiceData.steps; let i = index">Paso {{ i + 1 }}<span class="thead-sub">{{ s.expr }}</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let row of practiceData.rows; let rowIndex = index">
-              <!-- Valores de variables -->
-              <td *ngFor="let v of practiceData.vars">
-                <span class="pill" [class.v]="row.env[v]" [class.f]="!row.env[v]">
-                  {{ row.env[v] ? 'V' : 'F' }}
-                </span>
-              </td>
-              <!-- Celdas de entrada del usuario para los pasos -->
-              <td *ngFor="let s of practiceData.steps; let colIndex = index">
-                <button class="practice-cell" 
-                        (click)="togglePracticeCellValue(rowIndex, colIndex)"
-                        [class.correct]="isPracticeVerified && verificationStatus[rowIndex][colIndex] === 'correct'"
-                        [class.incorrect]="isPracticeVerified && verificationStatus[rowIndex][colIndex] === 'incorrect'">
-                  {{ userPracticeInputs[rowIndex][colIndex] === true ? 'V' : (userPracticeInputs[rowIndex][colIndex] === false ? 'F' : '?') }}
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="practice-controls">
-        <button class="btn primary" (click)="verifyAnswers()">Verificar</button>
-      </div>
-    </section>
   </div>
 </main>
 
-<!-- Modal de Ayuda -->
-<div *ngIf="isHelpModalVisible" class="modal-overlay" (click)="closeHelpModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+<!-- Help Modal -->
+@if (isHelpModalVisible()) {
+  <div class="modal-backdrop" (click)="closeHelpModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
       <header class="modal-header">
-        <h2>Guía de Operadores Lógicos</h2>
-        <button class="close-btn" (click)="closeHelpModal()" aria-label="Cerrar modal">
+        <h2 class="modal-title">Operadores Lógicos</h2>
+        <button class="btn-icon" (click)="closeHelpModal()" aria-label="Cerrar">
           <span class="material-symbols-outlined">close</span>
         </button>
       </header>
       <div class="modal-body">
-        <ul>
-          <li><strong>¬ (Negación):</strong> Invierte el valor de verdad. Si algo es verdadero, se vuelve falso, y viceversa.</li>
-          <li><strong>∧ (Conjunción):</strong> Es verdadero únicamente si <strong>ambos</strong> operandos son verdaderos.</li>
-          <li><strong>∨ (Disyunción):</strong> Es verdadero si <strong>al menos uno</strong> de los operandos es verdadero.</li>
-          <li><strong>→ (Condicional):</strong> Es falso solamente si el primer operando (antecedente) es verdadero y el segundo (consecuente) es falso.</li>
-          <li><strong>↔ (Bicondicional):</strong> Es verdadero si ambos operandos tienen el <strong>mismo valor de verdad</strong> (ambos verdaderos o ambos falsos).</li>
-        </ul>
+        <dl class="modal-list">
+          <div class="modal-item">
+            <dt>¬ Negación</dt>
+            <dd>Invierte el valor de verdad.</dd>
+          </div>
+          <div class="modal-item">
+            <dt>∧ Conjunción</dt>
+            <dd>Verdadero solo si ambos operandos son verdaderos.</dd>
+          </div>
+          <div class="modal-item">
+            <dt>∨ Disyunción</dt>
+            <dd>Verdadero si al menos uno es verdadero.</dd>
+          </div>
+          <div class="modal-item">
+            <dt>→ Condicional</dt>
+            <dd>Falso solo si el antecedente es verdadero y el consecuente falso.</dd>
+          </div>
+          <div class="modal-item">
+            <dt>↔ Bicondicional</dt>
+            <dd>Verdadero si ambos tienen el mismo valor de verdad.</dd>
+          </div>
+        </dl>
       </div>
     </div>
   </div>
+}
