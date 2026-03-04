@@ -5,6 +5,21 @@ Todos los cambios notables de este proyecto se documentan en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/),
 y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.0.1] - 2026-03-04
+
+### Changed
+
+- Actualización de Angular y toolchain de `21.1.3` a `21.2.0` (`@angular/core`, `@angular/cli`, `@angular/build`, `@angular/compiler-cli` y paquetes `@angular/*` relacionados)
+
+### Fixed
+
+- Corrección de `app.component.spec.ts` para eliminar expectativas obsoletas y validar el layout/navegación actual del componente raíz
+- Corrección de `truth-table-generator.component.spec.ts` agregando un proveedor de `ActivatedRoute` para evitar el error `NG0201` en pruebas unitarias
+
+### Security
+
+- Regeneración completa de dependencias (`node_modules` y `package-lock.json`) con auditoría final en `0 vulnerabilities`
+
 ## [2.0.0] - 2026-02-07
 
 ### Added

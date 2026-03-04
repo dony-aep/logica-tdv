@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { of } from 'rxjs';
 
 import { TruthTableGeneratorComponent } from './truth-table-generator.component';
 
@@ -8,7 +10,15 @@ describe('TruthTableGeneratorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TruthTableGeneratorComponent]
+      imports: [TruthTableGeneratorComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParamMap: of(convertToParamMap({}))
+          }
+        }
+      ]
     })
     .compileComponents();
 

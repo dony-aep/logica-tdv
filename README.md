@@ -15,7 +15,7 @@ Aplicación web para generar y practicar tablas de verdad de lógica proposicion
 
 ## Tech Stack
 
-- **Angular** 21.1.3
+- **Angular** 21.2.0
 - **TypeScript** ~5.9.3
 - **Google Generative AI SDK** (`@google/genai`)
 - **Vercel Analytics**
