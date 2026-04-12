@@ -5,6 +5,20 @@ Todos los cambios notables de este proyecto se documentan en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/),
 y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.0.2] - 2026-04-12
+
+### Changed
+
+- Actualización de Angular runtime de `21.2.0` a `21.2.8` (`@angular/animations`, `@angular/common`, `@angular/compiler`, `@angular/core`, `@angular/forms`, `@angular/platform-browser`, `@angular/platform-browser-dynamic`, `@angular/router`)
+- Actualización de tooling de Angular: `@angular/build` y `@angular/cli` de `21.2.0` a `21.2.7`
+- Actualización de `@angular/compiler-cli` de `21.2.0` a `21.2.8`
+- Overrides de seguridad añadidos para `tar@7.5.11` y `undici@7.24.0`
+
+### Security
+
+- Regeneración de dependencias y lockfile con parches transitivos de seguridad aplicados
+- Auditoría de npm en estado limpio: `0 vulnerabilities`
+
 ## [2.0.1] - 2026-03-04
 
 ### Changed
