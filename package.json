@@ -40,8 +40,9 @@
   "overrides": {
     "tar": "7.5.11",
     "undici": "7.24.0",
-    "protobufjs": "7.5.5",
-    "hono": "4.12.16",
+    "protobufjs": "7.5.8",
+    "hono": "4.12.21",
+    "esbuild": "0.28.1",
     "follow-redirects": "1.16.0",
     "ip-address": "10.1.1",
     "postcss": "8.5.10"
