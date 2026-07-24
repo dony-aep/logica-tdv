@@ -32,13 +32,16 @@ export class TruthTableGeneratorComponent implements OnInit {
   readonly showApiKey = signal(false);
   readonly statement = signal('');
   readonly nlLoading = signal(false);
-  readonly selectedModel = signal('gemini-2.5-flash');
+  readonly selectedModel = signal('gemini-3.6-flash');
 
+  // Los modelos 2.5 se retiran el 16-10-2026; quitarlos de aquí antes de esa fecha.
   readonly availableModels: { id: string; label: string; tier: 'free' | 'paid' }[] = [
-    { id: 'gemini-3-flash-preview', label: 'Gemini 3 Flash', tier: 'free' },
+    { id: 'gemini-3.6-flash', label: 'Gemini 3.6 Flash', tier: 'free' },
+    { id: 'gemini-3.5-flash', label: 'Gemini 3.5 Flash', tier: 'free' },
+    { id: 'gemini-3.5-flash-lite', label: 'Gemini 3.5 Flash-Lite', tier: 'free' },
     { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash', tier: 'free' },
     { id: 'gemini-2.5-flash-lite', label: 'Gemini 2.5 Flash-Lite', tier: 'free' },
-    { id: 'gemini-3-pro-preview', label: 'Gemini 3 Pro', tier: 'paid' },
+    { id: 'gemini-3.1-pro-preview', label: 'Gemini 3.1 Pro', tier: 'paid' },
     { id: 'gemini-2.5-pro', label: 'Gemini 2.5 Pro', tier: 'paid' },
   ];
 
