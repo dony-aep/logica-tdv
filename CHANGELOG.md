@@ -5,6 +5,32 @@ Todos los cambios notables de este proyecto se documentan en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/),
 y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.1.0] - 2026-08-06
+
+### Added
+
+- Modelos vigentes en el selector de IA: `gemini-3.6-flash`, `gemini-3.5-flash` y `gemini-3.5-flash-lite` (gratis), y `gemini-3.1-pro-preview` (pago)
+- `CLAUDE.md` con la guía del proyecto para agentes (arquitectura del motor lógico, convenciones y política de dependencias)
+
+### Changed
+
+- Modelo por defecto de Gemini cambiado de `gemini-2.5-flash` a `gemini-3.6-flash`, alineado entre el componente y `GeminiService`
+- Retiradas las entradas ya inválidas `gemini-3-pro-preview` (apagado el 09-03-2026) y `gemini-3-flash-preview` (deprecado)
+- Actualización del runtime de Angular de `21.2.17` a `21.2.19` (`@angular/animations`, `@angular/common`, `@angular/compiler`, `@angular/compiler-cli`, `@angular/core`, `@angular/forms`, `@angular/platform-browser`, `@angular/platform-browser-dynamic`, `@angular/router`)
+- Actualización del tooling de Angular: `@angular/build` y `@angular/cli` de `21.2.16` a `21.2.20`
+- Actualización de `@google/genai` de `1.52.0` a `2.16.0` (los cambios de ruptura del major afectan solo a la API de Interactions, no a `generateContent`)
+- Actualización de `@vercel/analytics` de `1.6.1` a `2.0.1`
+- Actualización de `zone.js` de `0.15.1` a `0.16.2`, dentro del rango de peers declarado por `@angular/core`
+- Actualización del stack de pruebas: `jasmine-core` de `5.5.0` a `6.3.0`, `@types/jasmine` de `5.1.15` a `6.0.0` y `karma-jasmine-html-reporter` de `2.1.0` a `2.2.0`
+- Bloque `overrides` reducido de 21 pines a 2 (`undici` y `@hono/node-server`): el resto quedó redundante al alcanzarlos la resolución natural del árbol
+- Sincronización de `version` en `package.json` con el CHANGELOG, que llevaba desde el inicio en `0.0.0`
+
+### Security
+
+- Resueltas 12 alertas abiertas de Dependabot en `@angular/common`, `@angular/compiler`, `@angular/core`, `brace-expansion`, `fast-uri`, `ip-address`, `socket.io-parser` y `undici`
+- Suelos de override elevados a las versiones parcheadas: `undici` a `^7.29.0`
+- Auditoría de npm en estado limpio: `0 vulnerabilities`
+
 ## [2.0.2] - 2026-04-12
 
 ### Changed
