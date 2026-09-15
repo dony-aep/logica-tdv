@@ -5,6 +5,22 @@ Todos los cambios notables de este proyecto se documentan en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/),
 y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.1.1] - 2026-09-15
+
+### Changed
+
+- Actualización del runtime de Angular de `21.2.19` a `21.2.23` (`@angular/animations`, `@angular/common`, `@angular/compiler`, `@angular/compiler-cli`, `@angular/core`, `@angular/forms`, `@angular/platform-browser`, `@angular/platform-browser-dynamic`, `@angular/router`)
+- Actualización del tooling de Angular: `@angular/build` y `@angular/cli` de `21.2.20` a `21.2.24`
+- Actualización de `@google/genai` de `2.16.0` a `2.22.0`
+- Actualización de `zone.js` de `0.16.2` a `0.16.3` y de `karma-jasmine-html-reporter` de `2.2.0` a `2.3.0`
+- Bloque `overrides` eliminado por completo, porque la resolución natural del árbol ya alcanza los dos suelos que quedaban (`undici` y `@hono/node-server`). El manifiesto vuelve a no pinear ninguna dependencia transitiva
+
+### Security
+
+- Resueltas las 9 alertas abiertas de Dependabot: `@angular/core`, `@angular/compiler` y `@angular/common` por el bypass de sanitización en host bindings y la fuga de `HttpTransferCache`, más `fast-uri` (4 alertas altas de SSRF y confusión de host) y `hono` (2 alertas moderadas)
+- Parches transitivos aplicados sin forzar versiones: `fast-uri` a `3.1.8`, `hono` a `4.13.8`, `nanoid` a `3.3.19` y `qs` a `6.16.0`, todos dentro del rango que ya declaraban sus paquetes padre
+- Auditoría de npm en estado limpio: `0 vulnerabilities`
+
 ## [2.1.0] - 2026-08-06
 
 ### Added
