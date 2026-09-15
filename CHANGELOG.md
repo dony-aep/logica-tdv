@@ -5,6 +5,20 @@ Todos los cambios notables de este proyecto se documentan en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/),
 y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.2.0] - 2026-09-15
+
+### Added
+
+- Gemini 3.8 Flash (`gemini-3.8-flash`) y Gemini 3.7 Flash (`gemini-3.7-flash`) en el selector de IA, los dos dentro del tier gratuito
+
+### Changed
+
+- Modelo por defecto cambiado de `gemini-3.6-flash` a `gemini-3.8-flash`, alineado entre el componente y `GeminiService`
+
+### Removed
+
+- Retirados del selector `gemini-2.5-flash`, `gemini-2.5-flash-lite` y `gemini-2.5-pro`. Los Flash de la serie 3 cubren lo mismo con mejores resultados y el mismo acceso gratuito, y el 2.5 Pro era la única opción de pago redundante junto a 3.1 Pro
+
 ## [2.1.1] - 2026-09-15
 
 ### Changed

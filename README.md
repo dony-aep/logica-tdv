@@ -9,7 +9,7 @@ Aplicación web para generar y practicar tablas de verdad de lógica proposicion
 - **Generador de tablas de verdad** — Ingresa cualquier expresión lógica y genera su tabla de verdad paso a paso
 - **Modo práctica** — Completa celdas interactivas y recibe feedback visual (correcto/incorrecto)
 - **IA: Enunciado → Expresión** — Convierte enunciados en español a expresiones lógicas usando la API de Google Gemini
-- **Selector de modelos** — Elige entre Gemini 3.6 Flash, 3.5 Flash, 3.5 Flash-Lite, 2.5 Flash, 2.5 Flash-Lite, 3.1 Pro y 2.5 Pro (con indicadores de tier gratis/pago)
+- **Selector de modelos** — Elige entre Gemini 3.8 Flash, 3.7 Flash, 3.6 Flash, 3.5 Flash, 3.5 Flash-Lite y 3.1 Pro (con indicadores de tier gratis/pago)
 - **Tema claro/oscuro** — Toggle de tema con persistencia en localStorage
 - **Responsive** — Diseño adaptado a móvil con scroll horizontal interno en tablas
 

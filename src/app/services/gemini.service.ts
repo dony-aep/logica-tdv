@@ -6,7 +6,7 @@ import { GoogleGenAI } from '@google/genai';
 })
 export class GeminiService {
 
-  async getExpressionFromStatement(apiKey: string, statement: string, model = 'gemini-3.6-flash'): Promise<string> {
+  async getExpressionFromStatement(apiKey: string, statement: string, model = 'gemini-3.8-flash'): Promise<string> {
     if (!apiKey) {
       throw new Error('API Key de Gemini no proporcionada.');
     }
