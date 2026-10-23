@@ -10,10 +10,12 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Changed
 
 - La app deja de cargar zone.js y pasa a la detección de cambios sin zonas, la opción por defecto desde Angular 21. El bundle inicial baja de 282 kB a 243 kB (de 78 kB a 66 kB transferidos), y Angular solo vuelve a pintar cuando cambia una signal o salta un evento de la plantilla
+- Las pruebas pasan de Karma y Jasmine a Vitest, el runner por defecto de Angular 22, sobre jsdom: corren en Node sin abrir un navegador. Karma lo dejaron de mantener sus propios autores en 2023
 
 ### Removed
 
 - `@angular/platform-browser-dynamic`, deprecado en Angular 22 y sin uso: la app arranca con `bootstrapApplication` de `@angular/platform-browser`
+- `karma`, `karma-chrome-launcher`, `karma-coverage`, `karma-jasmine`, `karma-jasmine-html-reporter`, `jasmine-core`, `@types/jasmine` y `istanbul-lib-instrument`, que solo servían al runner anterior
 
 ## [2.3.0] - 2026-10-23
 

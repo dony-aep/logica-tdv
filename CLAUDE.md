@@ -11,13 +11,13 @@ solo archivo.
 ```bash
 npm start                                          # dev server → localhost:4200
 npm run build                                      # build de producción (default)
-npm test                                           # karma en modo watch (abre Chrome)
-npx ng test --watch=false --browsers=ChromeHeadless # una pasada, para CI/agentes
+npm test                                           # vitest en modo watch
+npx ng test --watch=false                          # una pasada, para CI/agentes
 npm audit                                          # debe dar 0 vulnerabilidades
 ```
 
-Usa siempre la variante headless al verificar cambios: `npm test` se queda en watch y
-no termina.
+Usa siempre `--watch=false` al verificar cambios: en una terminal interactiva `npm test`
+se queda en watch y no termina.
 
 ## Arquitectura
 
@@ -84,7 +84,8 @@ pinta solo; guárdalo en una signal, no reintroduzcas `provideZoneChangeDetectio
 - **Todo en español**: comentarios, mensajes de error, textos de UI y mensajes de commit.
 - Commits en Conventional Commits con scope en español: `fix(seguridad):`, `feat(ui):`.
 - CSS plano por componente, sin librería de UI ni preprocesador.
-- Tests con Jasmine + Karma, junto al archivo que prueban (`*.spec.ts`).
+- Tests con Vitest sobre jsdom, junto al archivo que prueban (`*.spec.ts`). Los globals
+  (`describe`, `it`, `expect`, `vi`) vienen de `vitest/globals`, sin imports.
 
 ## Dependencias y seguridad
 
@@ -97,7 +98,8 @@ caret se auto-corrige dentro del mismo major y el lockfile mantiene la reproduci
 
 Cuando un paquete convive en varios majors dentro del árbol (`body-parser`,
 `brace-expansion`), usa la sintaxis por major — `"brace-expansion@2": "^2.1.2"` — en vez
-de un override único que forzaría un major incompatible sobre `karma` o `rimraf`.
+de un override único que forzaría un major incompatible sobre los paquetes que dependen
+del otro.
 
-Tras tocar dependencias, verifica las tres: `npm audit`, `npm run build` y los tests
-headless.
+Tras tocar dependencias, verifica las tres: `npm audit`, `npm run build` y
+`npx ng test --watch=false`.
