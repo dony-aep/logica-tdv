@@ -47,8 +47,8 @@ Los corchetes y las llaves cuentan como paréntesis. Sin paréntesis, `¬` liga 
 `∧`, este más que `∨`, este más que `→` y este más que `↔`. `¬` y `→` agrupan por la
 derecha: `p → q → r` es `p → (q → r)`.
 
-Una variable es una palabra hecha solo de letras, tildes incluidas, así que `Lluvia` o
-`camión` valen pero `p1` no. Las columnas de variables salen en orden alfabético.
+Una variable es una palabra hecha solo de letras, con tildes y `ñ` incluidas, así que
+`Lluvia`, `camión` o `año` valen pero `p1` no. Las columnas de variables salen en orden alfabético.
 
 ## Desarrollo
 

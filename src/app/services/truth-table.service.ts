@@ -121,7 +121,7 @@ export class TruthTableService {
 
   private tokenize(expr: string): string[] {
     const tokens = [];
-    const re = /[A-Za-zÁÉÍÓÚÑáéíóúÜü]+|[↔→∧∨¬()]|\s+/g;
+    const re = /[A-Za-zÁÉÍÓÚÑáéíóúñÜü]+|[↔→∧∨¬()]|\s+/g;
     let m;
     while ((m = re.exec(expr)) !== null) {
       const t = m[0];
@@ -214,7 +214,7 @@ export class TruthTableService {
     const vars = new Set<string>();
     const ops = new Set(["¬","∧","∨","→","↔","(",")"]);
     for (const t of tokens) {
-      if (!ops.has(t) && /^[A-Za-zÁÉÍÓÚÑáéíóúÜü]+$/.test(t)) {
+      if (!ops.has(t) && /^[A-Za-zÁÉÍÓÚÑáéíóúñÜü]+$/.test(t)) {
         vars.add(t);
       }
     }
