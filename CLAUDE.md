@@ -67,7 +67,9 @@ Claves de `localStorage` en uso: `GEMINI_API_KEY`, `LAST_STATEMENT`,
 El proyecto ya usa el estilo moderno. Imítalo:
 
 - **Standalone**, sin NgModules. Rutas con `loadComponent()` (lazy).
-- **`ChangeDetectionStrategy.OnPush` en todos los componentes.** Si añades uno, ponlo.
+- **`OnPush` sin declararlo.** Es el default desde Angular 22, así que los componentes no
+  llevan `changeDetection`. No uses `ChangeDetectionStrategy.Eager`, que devuelve el
+  comportamiento anterior a la 22 y revisa el componente en cada ciclo.
 - **Signals** para estado: `signal()`, `input()`, `output()`, `viewChild()`. No uses
   `@Input`/`@Output` decoradores ni `BehaviorSubject` para estado de componente.
 - **`inject()`** en campos `private readonly`, no inyección por constructor.

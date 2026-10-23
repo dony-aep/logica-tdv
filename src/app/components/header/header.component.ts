@@ -1,9 +1,8 @@
-import { Component, ChangeDetectionStrategy, OnInit, signal, computed, inject } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-header',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'

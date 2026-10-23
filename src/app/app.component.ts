@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, PLATFORM_ID, signal, inject } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, signal, inject } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { filter } from 'rxjs';
@@ -9,7 +9,6 @@ import { inject as injectAnalytics } from '@vercel/analytics';
 
 @Component({
   selector: 'app-root',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterOutlet,
     HeaderComponent,

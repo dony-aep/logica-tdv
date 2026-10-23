@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ElementRef, OnInit, viewChild, signal, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, viewChild, signal, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TruthTableService, TableData, Step } from '../../services/truth-table.service';
 import { ActivatedRoute } from '@angular/router';
@@ -6,7 +6,6 @@ import { GeminiService } from '../../services/gemini.service';
 
 @Component({
   selector: 'app-truth-table-generator',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule],
   templateUrl: './truth-table-generator.component.html',
   styleUrl: './truth-table-generator.component.css'

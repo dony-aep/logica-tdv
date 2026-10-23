@@ -1,10 +1,9 @@
-import { Component, ChangeDetectionStrategy, ElementRef, viewChild, signal, inject } from '@angular/core';
+import { Component, ElementRef, viewChild, signal, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TruthTableService, PracticeTableData } from '../../services/truth-table.service';
 
 @Component({
   selector: 'app-practice-table',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule],
   templateUrl: './practice-table.component.html',
   styleUrls: ['./practice-table.component.css']
