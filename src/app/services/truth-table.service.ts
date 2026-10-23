@@ -121,10 +121,13 @@ export class TruthTableService {
 
   private tokenize(expr: string): string[] {
     const tokens = [];
-    const re = /[A-Za-zÁÉÍÓÚÑáéíóúñÜü]+|[↔→∧∨¬()]|\s+/g;
+    // La última alternativa captura lo que ninguna otra reconoce. Sin ella, exec saltaba
+    // esos caracteres en silencio y «p1 ∧ q» generaba la tabla de «p ∧ q».
+    const re = /[A-Za-zÁÉÍÓÚÑáéíóúñÜü]+|[↔→∧∨¬()]|\s+|(.)/gu;
     let m;
     while ((m = re.exec(expr)) !== null) {
       const t = m[0];
+      if (m[1] !== undefined) throw new Error(`Carácter no reconocido: «${m[1]}»`);
       if (/\s+/.test(t)) continue;
       tokens.push(t);
     }

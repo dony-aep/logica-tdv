@@ -10,6 +10,7 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Fixed
 
 - Las variables con `ñ` minúscula ya funcionan. `año ∧ p` daba «Expresión inválida», y con la `ñ` al principio o al final de la palabra la letra se perdía sin avisar: `ñu ∨ q` generaba la tabla de `u ∨ q`
+- Un carácter que la app no reconoce ahora da un error que lo nombra, en vez de descartarse sin avisar. `p1 ∧ q` generaba la tabla de `p ∧ q` y ahora responde `Carácter no reconocido: «1»`, en los dos modos
 
 ## [2.4.0] - 2026-10-23
 

@@ -48,7 +48,8 @@ Los corchetes y las llaves cuentan como paréntesis. Sin paréntesis, `¬` liga 
 derecha: `p → q → r` es `p → (q → r)`.
 
 Una variable es una palabra hecha solo de letras, con tildes y `ñ` incluidas, así que
-`Lluvia`, `camión` o `año` valen pero `p1` no. Las columnas de variables salen en orden alfabético.
+`Lluvia`, `camión` o `año` valen pero `p1` no: la app avisa del primer carácter que no
+reconoce. Las columnas de variables salen en orden alfabético.
 
 ## Desarrollo
 
