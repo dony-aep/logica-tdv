@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Generador y practicador de tablas de verdad de lógica proposicional. Angular 21, SPA
+Generador y practicador de tablas de verdad de lógica proposicional. Angular 22, SPA
 100% cliente, sin backend ni variables de entorno.
 
 El README cubre features e instalación; este archivo cubre lo que no se ve leyendo un

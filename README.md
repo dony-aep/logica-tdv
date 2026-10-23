@@ -15,8 +15,8 @@ Aplicación web para generar y practicar tablas de verdad de lógica proposicion
 
 ## Tech Stack
 
-- **Angular** 21.2.23
-- **TypeScript** ~5.9.3
+- **Angular** 22.2.3
+- **TypeScript** ~6.0.3
 - **Google Generative AI SDK** (`@google/genai`)
 - **Vercel Analytics**
 
@@ -24,7 +24,7 @@ Aplicación web para generar y practicar tablas de verdad de lógica proposicion
 
 ### Requisitos previos
 
-- Node.js 20+
+- Node.js 22.22.3+ o 24.15.0+
 - Angular CLI (`npm install -g @angular/cli`)
 
 ### Instalación

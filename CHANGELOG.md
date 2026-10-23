@@ -5,6 +5,26 @@ Todos los cambios notables de este proyecto se documentan en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/),
 y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.3.0] - 2026-10-23
+
+### Changed
+
+- Migración a Angular 22: runtime de `21.2.23` a `22.2.3` (`@angular/common`, `@angular/compiler`, `@angular/compiler-cli`, `@angular/core`, `@angular/forms`, `@angular/platform-browser`, `@angular/platform-browser-dynamic`, `@angular/router`) y tooling (`@angular/build`, `@angular/cli`) de `21.2.24` a `22.2.4`. Las migraciones de `ng update` no tocaron el código, porque los componentes ya declaraban `OnPush` y ninguna plantilla usa `?.` ni `??`
+- Actualización de TypeScript de `5.9.3` a `6.0.3`, la versión que exige Angular 22
+- El entorno de desarrollo pide ahora Node.js `22.22.3` o `24.15.0` como mínimo, el rango que declara Angular CLI 22
+- Actualización de `@google/genai` de `2.22.0` a `2.31.0`
+- Las pruebas siguen en Karma. Se añade `istanbul-lib-instrument`, que Angular 22 ya no instala por su cuenta y que la cobertura de Karma necesita
+
+### Removed
+
+- `@angular/animations`, que ninguna parte de la app importaba
+
+### Security
+
+- Resueltas las 9 alertas abiertas de Dependabot: `@angular/router` (2 de denegación de servicio en SSR), `@modelcontextprotocol/sdk` (3) y `hono` (1), que salen del árbol con las nuevas versiones de `@angular/cli` y `@google/genai`, más `follow-redirects` a `1.16.1` (2) y `source-map-js` a `1.2.2` (1)
+- Override `vite` a `^8.3.3`, porque `@angular/build@22.2.4` fija `vite` en `8.3.0`, afectada por seis advisories del servidor de desarrollo (uno alto, en `launch-editor` sobre Windows). Retirarlo cuando una versión estable de `@angular/build` dependa de `vite` 8.3.3 o superior
+- Auditoría de npm en estado limpio: `0 vulnerabilities`, frente a 11 antes de la migración (2 críticas en `piscina` y `@angular/build`)
+
 ## [2.2.0] - 2026-09-15
 
 ### Added
