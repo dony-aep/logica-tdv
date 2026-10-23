@@ -73,7 +73,9 @@ El proyecto ya usa el estilo moderno. Imítalo:
 - **`inject()`** en campos `private readonly`, no inyección por constructor.
 - TypeScript en `strict` + `strictTemplates` + `noPropertyAccessFromIndexSignature`.
 
-La app sigue en `provideZoneChangeDetection` (zone.js), no zoneless.
+La app es zoneless: no carga zone.js y la detección de cambios solo corre cuando cambia
+una signal leída en la plantilla o salta un listener. Un valor que no sea signal no se
+pinta solo; guárdalo en una signal, no reintroduzcas `provideZoneChangeDetection`.
 
 ## Convenciones del proyecto
 

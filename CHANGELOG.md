@@ -5,6 +5,12 @@ Todos los cambios notables de este proyecto se documentan en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/),
 y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
+## [Unreleased]
+
+### Changed
+
+- La app deja de cargar zone.js y pasa a la detección de cambios sin zonas, la opción por defecto desde Angular 21. El bundle inicial baja de 282 kB a 243 kB (de 78 kB a 66 kB transferidos), y Angular solo vuelve a pintar cuando cambia una signal o salta un evento de la plantilla
+
 ## [2.3.0] - 2026-10-23
 
 ### Changed
