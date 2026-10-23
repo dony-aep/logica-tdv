@@ -11,6 +11,10 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 - La app deja de cargar zone.js y pasa a la detección de cambios sin zonas, la opción por defecto desde Angular 21. El bundle inicial baja de 282 kB a 243 kB (de 78 kB a 66 kB transferidos), y Angular solo vuelve a pintar cuando cambia una signal o salta un evento de la plantilla
 
+### Removed
+
+- `@angular/platform-browser-dynamic`, deprecado en Angular 22 y sin uso: la app arranca con `bootstrapApplication` de `@angular/platform-browser`
+
 ## [2.3.0] - 2026-10-23
 
 ### Changed
